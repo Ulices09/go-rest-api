@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type CustomValidator struct {
@@ -69,6 +70,9 @@ func main() {
 
 	e := echo.New()
 	e.Validator = &CustomValidator{validator: validator.New()}
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "${method}, uri=${uri}, status=${status}\n",
+	}))
 
 	router.NewPostRouter(e, postController)
 
