@@ -1,6 +1,11 @@
 package main
 
 import (
+	"go-rest-api/controller"
+	"go-rest-api/db"
+	"go-rest-api/repository"
+	"go-rest-api/router"
+	"go-rest-api/service"
 	"net/http"
 	"strings"
 
@@ -56,13 +61,16 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 }
 
 func main() {
-	app := echo.New()
+	db := db.InitDb()
 
-	app.Validator = &CustomValidator{validator: validator.New()}
+	postRepo := repository.NewPostRepository(db)
+	postService := service.NewPostService(postRepo)
+	postController := controller.NewPostController(postService)
 
-	app.GET("", GetPosts)
-	app.GET(":id", GetPost)
-	app.POST("", CreatePost)
+	e := echo.New()
+	e.Validator = &CustomValidator{validator: validator.New()}
 
-	app.Logger.Fatal(app.Start((":8000")))
+	router.NewPostRouter(e, postController)
+
+	e.Logger.Fatal(e.Start((":8000")))
 }
