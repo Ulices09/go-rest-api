@@ -1,12 +1,10 @@
-package router
+package posts
 
 import (
-	"go-rest-api/controller"
-
 	"github.com/labstack/echo/v4"
 )
 
-func NewPostRouter(e *echo.Echo, postController controller.PostController) {
+func NewPostRouter(e *echo.Echo, postController PostController) {
 	postsGroup := e.Group("/posts")
 	postsGroup.GET("", postController.GetPosts)
 	postsGroup.GET("/:id", postController.GetPost)

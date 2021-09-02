@@ -1,8 +1,7 @@
-package service
+package posts
 
 import (
 	"go-rest-api/entity"
-	"go-rest-api/repository"
 )
 
 type PostService interface {
@@ -12,10 +11,10 @@ type PostService interface {
 }
 
 type service struct {
-	postRepo repository.PostRepository
+	postRepo PostRepository
 }
 
-func NewPostService(postRepo repository.PostRepository) PostService {
+func NewPostService(postRepo PostRepository) PostService {
 	return &service{postRepo}
 }
 

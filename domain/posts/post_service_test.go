@@ -1,8 +1,8 @@
-package service_test
+package posts_test
 
 import (
+	"go-rest-api/domain/posts"
 	"go-rest-api/entity"
-	"go-rest-api/service"
 	"testing"
 	"time"
 
@@ -69,7 +69,7 @@ func TestGetAll(t *testing.T) {
 	mockRepo := new(MockRepository)
 	mockRepo.On("FindAll").Return(postsData, nil)
 
-	service := service.NewPostService(mockRepo)
+	service := posts.NewPostService(mockRepo)
 	posts, err := service.GetAll()
 
 	mockRepo.AssertExpectations(t)
@@ -81,7 +81,7 @@ func TestGetById(t *testing.T) {
 	mockRepo := new(MockRepository)
 	mockRepo.On("FindById").Return(&post1, nil)
 
-	service := service.NewPostService(mockRepo)
+	service := posts.NewPostService(mockRepo)
 	post, err := service.GetById(1)
 
 	mockRepo.AssertExpectations(t)
@@ -95,7 +95,7 @@ func TestCreate(t *testing.T) {
 	mockRepo := new(MockRepository)
 	mockRepo.On("Create").Return(&post1, nil)
 
-	service := service.NewPostService(mockRepo)
+	service := posts.NewPostService(mockRepo)
 	post, err := service.Create(&post1)
 
 	mockRepo.AssertExpectations(t)

@@ -1,8 +1,7 @@
-package controller
+package posts
 
 import (
 	"go-rest-api/entity"
-	"go-rest-api/service"
 	"net/http"
 	"strconv"
 
@@ -16,10 +15,10 @@ type PostController interface {
 }
 
 type controller struct {
-	postService service.PostService
+	postService PostService
 }
 
-func NewPostController(postService service.PostService) PostController {
+func NewPostController(postService PostService) PostController {
 	return &controller{postService}
 }
 

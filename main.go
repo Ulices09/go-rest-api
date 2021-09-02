@@ -1,11 +1,9 @@
 package main
 
 import (
-	"go-rest-api/controller"
 	"go-rest-api/db"
-	"go-rest-api/repository"
-	"go-rest-api/router"
-	"go-rest-api/service"
+	"go-rest-api/domain/posts"
+
 	"log"
 	"net/http"
 	"strings"
@@ -75,9 +73,9 @@ func main() {
 		sqlDB.Close()
 	}()
 
-	postRepo := repository.NewPostRepository(db)
-	postService := service.NewPostService(postRepo)
-	postController := controller.NewPostController(postService)
+	postRepo := posts.NewPostRepository(db)
+	postService := posts.NewPostService(postRepo)
+	postController := posts.NewPostController(postService)
 
 	e := echo.New()
 	e.Validator = &CustomValidator{validator: validator.New()}
@@ -85,7 +83,7 @@ func main() {
 		Format: "${method}, uri=${uri}, status=${status}\n",
 	}))
 
-	router.NewPostRouter(e, postController)
+	posts.NewPostRouter(e, postController)
 
 	e.Logger.Fatal(e.Start((":8000")))
 }

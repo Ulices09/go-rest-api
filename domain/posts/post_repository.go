@@ -1,4 +1,4 @@
-package repository
+package posts
 
 import (
 	"errors"
