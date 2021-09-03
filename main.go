@@ -4,7 +4,6 @@ import (
 	"go-rest-api/db"
 	"go-rest-api/domain/posts"
 
-	"log"
 	"net/http"
 	"strings"
 
@@ -62,16 +61,7 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 
 func main() {
 	db := db.InitDb()
-
-	defer func() {
-		sqlDB, err := db.DB()
-
-		if err != nil {
-			log.Fatal("Couldn't close database. Error: ", err)
-		}
-
-		sqlDB.Close()
-	}()
+	defer db.Close()
 
 	postRepo := posts.NewPostRepository(db)
 	postService := posts.NewPostService(postRepo)

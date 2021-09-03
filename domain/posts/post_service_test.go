@@ -18,10 +18,10 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) FindAll() ([]entity.Post, error) {
+func (m *MockRepository) FindAll() ([]*entity.Post, error) {
 	args := m.Called()
 	result := args.Get(0)
-	return result.([]entity.Post), args.Error(1)
+	return result.([]*entity.Post), args.Error(1)
 }
 
 func (m *MockRepository) FindById(id int) (*entity.Post, error) {
@@ -60,7 +60,7 @@ var post2 = entity.Post{
 	},
 }
 
-var postsData = []entity.Post{post1, post2}
+var postsData = []*entity.Post{&post1, &post2}
 
 /*
   Test functions

@@ -1,34 +1,23 @@
 package db
 
 import (
-	"go-rest-api/entity"
+	"context"
+	"go-rest-api/ent"
+	"log"
 
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
+	_ "github.com/mattn/go-sqlite3"
 )
 
-func InitDb() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+func InitDb() *ent.Client {
+	db, err := ent.Open("sqlite3", "file:app.db?_fk=1")
 
 	if err != nil {
-		panic("failed to connect database")
+		log.Fatalf("failed opening connection to sqlite: %v", err)
 	}
 
-	db.AutoMigrate(&entity.Post{})
-
-	// defer func() {
-	// 	sqlDB, err := db.DB()
-
-	// 	if err != nil {
-	// 		log.Fatalf("FATAL: Fail on close DB Connection, %s\n", err)
-	// 	}
-
-	// 	err = sqlDB.Close()
-
-	// 	if err != nil {
-	// 		log.Fatalf("FATAL: Fail on close DB Connection, %s\n", err)
-	// 	}
-	// }()
+	if err := db.Schema.Create(context.Background()); err != nil {
+		log.Fatalf("failed creating schema resources: %v", err)
+	}
 
 	return db
 }

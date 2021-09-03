@@ -5,7 +5,7 @@ import (
 )
 
 type PostService interface {
-	GetAll() ([]entity.Post, error)
+	GetAll() ([]*entity.Post, error)
 	GetById(id int) (*entity.Post, error)
 	Create(post *entity.Post) (*entity.Post, error)
 }
@@ -18,7 +18,7 @@ func NewPostService(postRepo PostRepository) PostService {
 	return &service{postRepo}
 }
 
-func (s *service) GetAll() ([]entity.Post, error) {
+func (s *service) GetAll() ([]*entity.Post, error) {
 	return s.postRepo.FindAll()
 }
 

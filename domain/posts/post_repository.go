@@ -1,54 +1,94 @@
 package posts
 
 import (
-	"errors"
+	"context"
+	"go-rest-api/ent"
+	entPost "go-rest-api/ent/post"
 	"go-rest-api/entity"
-
-	"gorm.io/gorm"
 )
 
 type PostRepository interface {
-	FindAll() ([]entity.Post, error)
+	FindAll() ([]*entity.Post, error)
 	FindById(id int) (*entity.Post, error)
 	Create(post *entity.Post) (*entity.Post, error)
 }
 
 type repo struct {
-	db *gorm.DB
+	db  *ent.Client
+	ctx context.Context
 }
 
-func NewPostRepository(db *gorm.DB) PostRepository {
-	return &repo{db}
+func NewPostRepository(db *ent.Client) PostRepository {
+	ctx := context.Background()
+	return &repo{db: db, ctx: ctx}
 }
 
-func (r *repo) FindAll() ([]entity.Post, error) {
-	var posts []entity.Post
+func (r *repo) FindAll() ([]*entity.Post, error) {
+	results, err := r.db.Post.Query().All(r.ctx)
 
-	if result := r.db.Find(&posts); result.Error != nil {
-		return nil, result.Error
+	if err != nil {
+		return nil, err
 	}
 
-	return posts, nil
+	posts := []*entity.Post{}
+
+	for _, result := range results {
+		post := entity.Post{
+			Title: result.Title,
+			Text:  result.Text,
+			Model: entity.Model{
+				ID:        result.ID,
+				CreatedAt: result.CreatedAt,
+				UpdatedAt: result.UpdatedAt,
+			},
+		}
+
+		posts = append(posts, &post)
+	}
+
+	return posts, err
 }
 
 func (r *repo) FindById(id int) (*entity.Post, error) {
-	var post entity.Post
+	result, err := r.db.Post.Query().Where(entPost.ID(id)).Only(r.ctx)
 
-	if result := r.db.First(&post, id); result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+	if err != nil {
+		if ent.IsNotFound(err) {
 			return nil, nil
 		}
 
-		return nil, result.Error
+		return nil, err
 	}
 
-	return &post, nil
+	post := entity.Post{
+		Title: result.Title,
+		Text:  result.Text,
+		Model: entity.Model{
+			ID:        result.ID,
+			CreatedAt: result.CreatedAt,
+			UpdatedAt: result.UpdatedAt,
+		},
+	}
+
+	return &post, err
 }
 
 func (r *repo) Create(post *entity.Post) (*entity.Post, error) {
-	if result := r.db.Create(&post); result.Error != nil {
-		return nil, result.Error
+	result, err := r.db.Post.Create().SetTitle(post.Text).SetText(post.Text).Save(r.ctx)
+
+	if err != nil {
+		return nil, err
 	}
 
-	return post, nil
+	newPost := entity.Post{
+		Title: result.Title,
+		Text:  result.Text,
+		Model: entity.Model{
+			ID:        result.ID,
+			CreatedAt: result.CreatedAt,
+			UpdatedAt: result.UpdatedAt,
+		},
+	}
+
+	return &newPost, err
 }
