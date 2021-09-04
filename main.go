@@ -14,7 +14,7 @@ func main() {
 	postService := posts.NewPostService(postRepo)
 	postController := posts.NewPostController(postService)
 
-	server := app.NewHttpServer()
+	server := app.New()
 
 	posts.NewPostRouter(server, postController)
 
