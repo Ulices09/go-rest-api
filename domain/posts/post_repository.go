@@ -7,12 +7,6 @@ import (
 	"go-rest-api/entity"
 )
 
-type PostRepository interface {
-	FindAll() ([]*entity.Post, error)
-	FindById(id int) (*entity.Post, error)
-	Create(post *entity.Post) (*entity.Post, error)
-}
-
 type repo struct {
 	db  *ent.Client
 	ctx context.Context

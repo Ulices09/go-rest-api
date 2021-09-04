@@ -8,12 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type PostController interface {
-	GetPosts(c echo.Context) error
-	GetPost(c echo.Context) error
-	CreatePost(c echo.Context) error
-}
-
 type controller struct {
 	postService PostService
 }

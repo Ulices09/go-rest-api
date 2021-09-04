@@ -4,12 +4,6 @@ import (
 	"go-rest-api/entity"
 )
 
-type PostService interface {
-	GetAll() ([]*entity.Post, error)
-	GetById(id int) (*entity.Post, error)
-	Create(post *entity.Post) (*entity.Post, error)
-}
-
 type service struct {
 	postRepo PostRepository
 }
