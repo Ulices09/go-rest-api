@@ -1,15 +1,18 @@
 package app
 
 import (
+	"go-rest-api/config"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type CustomMiddleware struct{}
+type CustomMiddleware struct {
+	config config.Config
+}
 
-// TODO: set config as parameter
-func InitMiddlware() *CustomMiddleware {
-	return &CustomMiddleware{}
+func InitMiddlware(config config.Config) *CustomMiddleware {
+	return &CustomMiddleware{config}
 }
 
 func (*CustomMiddleware) Logger() echo.MiddlewareFunc {
@@ -18,8 +21,10 @@ func (*CustomMiddleware) Logger() echo.MiddlewareFunc {
 	})
 }
 
-func (*CustomMiddleware) CORS() echo.MiddlewareFunc {
-	return middleware.CORSWithConfig(middleware.DefaultCORSConfig)
+func (m *CustomMiddleware) CORS() echo.MiddlewareFunc {
+	return middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: m.config.Host.AllowOrigins,
+	})
 }
 
 func (*CustomMiddleware) CSRF() echo.MiddlewareFunc {

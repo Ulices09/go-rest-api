@@ -16,3 +16,6 @@ bin/
 
 # sqlite
 *.db
+
+# config files
+*.env
