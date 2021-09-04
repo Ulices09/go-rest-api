@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go-rest-api/app"
 	"go-rest-api/config"
 	"go-rest-api/db"
@@ -15,12 +14,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Couldn't load config ", err)
 	}
-
-	for _, o := range config.Host.AllowOrigins {
-		fmt.Println(o)
-	}
-
-	fmt.Println()
 
 	db := db.InitDb(config)
 	defer db.Close()
