@@ -8,7 +8,11 @@ type Config struct {
 }
 
 type DBConfig struct {
-	Url string `mapstructure:"DB_URL"`
+	Host     string `mapstructure:"DB_HOST"`
+	Name     string `mapstructure:"DB_NAME"`
+	Password string `mapstructure:"DB_PASSWORD"`
+	Port     string `mapstructure:"DB_PORT"`
+	User     string `mapstructure:"DB_USER"`
 }
 
 type HostConfig struct {
@@ -23,6 +27,10 @@ func LoadConfig(path string) (config Config, err error) {
 
 	viper.SetDefault("HOST_PORT", "8000")
 	viper.SetDefault("HOST_ALLOW_ORIGINS", []string{"*"})
+	viper.SetDefault("DB_HOST", "localhost")
+	viper.SetDefault("DB_USER", "root")
+	viper.SetDefault("DB_PASSWORD", "root")
+	viper.SetDefault("DB_PORT", "3306")
 
 	if err = viper.ReadInConfig(); err != nil {
 		return

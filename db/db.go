@@ -2,16 +2,18 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"go-rest-api/config"
 	"go-rest-api/ent"
 	"log"
+	"net/url"
 
 	"entgo.io/ent/dialect/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func InitDb(config config.Config) *ent.Client {
-	drv, err := sql.Open("mysql", config.DB.Url)
+	drv, err := getMySqlDriver(config)
 
 	if err != nil {
 		log.Fatalf("Failed opening connection to db: %v", err)
@@ -24,4 +26,23 @@ func InitDb(config config.Config) *ent.Client {
 	}
 
 	return client
+}
+
+func getMySqlDriver(c config.Config) (*sql.Driver, error) {
+	connection := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s",
+		c.DB.User,
+		c.DB.Password,
+		c.DB.Host,
+		c.DB.Port,
+		c.DB.Name,
+	)
+
+	mysqlParams := url.Values{}
+	mysqlParams.Add("parseTime", "true")
+	mysqlParams.Add("loc", "America/Lima")
+
+	dsn := fmt.Sprintf("%s?%s", connection, mysqlParams.Encode())
+
+	return sql.Open("mysql", dsn)
 }
