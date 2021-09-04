@@ -6,19 +6,22 @@ import (
 	"go-rest-api/ent"
 	"log"
 
-	_ "github.com/mattn/go-sqlite3"
+	"entgo.io/ent/dialect/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func InitDb(config config.Config) *ent.Client {
-	db, err := ent.Open("sqlite3", config.DB.Url)
+	drv, err := sql.Open("mysql", config.DB.Url)
 
 	if err != nil {
-		log.Fatalf("failed opening connection to sqlite: %v", err)
+		log.Fatalf("Failed opening connection to db: %v", err)
 	}
 
-	if err := db.Schema.Create(context.Background()); err != nil {
+	client := ent.NewClient(ent.Driver(drv))
+
+	if err := client.Schema.Create(context.Background()); err != nil {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 
-	return db
+	return client
 }

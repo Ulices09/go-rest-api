@@ -14,7 +14,6 @@ func New(config config.Config) *echo.Echo {
 	cMiddleware := InitMiddlware(config)
 	e.Use(cMiddleware.Logger())
 	e.Use(cMiddleware.CORS())
-	e.Use(cMiddleware.CSRF())
 	e.Use(cMiddleware.Recover())
 	e.Use(cMiddleware.Secure())
 

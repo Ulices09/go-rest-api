@@ -3,30 +3,34 @@
 package migrate
 
 import (
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/dialect/sql/schema"
 	"entgo.io/ent/schema/field"
 )
 
 var (
-	// PostsColumns holds the columns for the "posts" table.
-	PostsColumns = []*schema.Column{
+	// PostColumns holds the columns for the "post" table.
+	PostColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "title", Type: field.TypeString},
 		{Name: "text", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 	}
-	// PostsTable holds the schema information for the "posts" table.
-	PostsTable = &schema.Table{
-		Name:       "posts",
-		Columns:    PostsColumns,
-		PrimaryKey: []*schema.Column{PostsColumns[0]},
+	// PostTable holds the schema information for the "post" table.
+	PostTable = &schema.Table{
+		Name:       "post",
+		Columns:    PostColumns,
+		PrimaryKey: []*schema.Column{PostColumns[0]},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		PostsTable,
+		PostTable,
 	}
 )
 
 func init() {
+	PostTable.Annotation = &entsql.Annotation{
+		Table: "post",
+	}
 }

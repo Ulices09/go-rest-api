@@ -5,8 +5,8 @@ go 1.17
 require (
 	entgo.io/ent v0.9.1
 	github.com/go-playground/validator/v10 v10.9.0
+	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae
 	github.com/labstack/echo/v4 v4.5.0
-	github.com/mattn/go-sqlite3 v1.14.8
 	github.com/spf13/viper v1.8.1
 	github.com/stretchr/testify v1.7.0
 )

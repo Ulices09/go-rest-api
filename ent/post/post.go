@@ -20,7 +20,7 @@ const (
 	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
 	FieldUpdatedAt = "updated_at"
 	// Table holds the table name of the post in the database.
-	Table = "posts"
+	Table = "post"
 )
 
 // Columns holds all SQL columns for post fields.
