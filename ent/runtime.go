@@ -5,6 +5,7 @@ package ent
 import (
 	"go-rest-api/ent/post"
 	"go-rest-api/ent/schema"
+	"go-rest-api/ent/user"
 	"time"
 )
 
@@ -22,4 +23,14 @@ func init() {
 	postDescUpdatedAt := postFields[3].Descriptor()
 	// post.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
 	post.DefaultUpdatedAt = postDescUpdatedAt.Default.(func() time.Time)
+	userFields := schema.User{}.Fields()
+	_ = userFields
+	// userDescCreatedAt is the schema descriptor for createdAt field.
+	userDescCreatedAt := userFields[2].Descriptor()
+	// user.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	user.DefaultCreatedAt = userDescCreatedAt.Default.(func() time.Time)
+	// userDescUpdatedAt is the schema descriptor for updatedAt field.
+	userDescUpdatedAt := userFields[3].Descriptor()
+	// user.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
 }

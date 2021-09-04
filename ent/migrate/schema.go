@@ -23,14 +23,32 @@ var (
 		Columns:    PostColumns,
 		PrimaryKey: []*schema.Column{PostColumns[0]},
 	}
+	// UserColumns holds the columns for the "user" table.
+	UserColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "email", Type: field.TypeString},
+		{Name: "password", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+	}
+	// UserTable holds the schema information for the "user" table.
+	UserTable = &schema.Table{
+		Name:       "user",
+		Columns:    UserColumns,
+		PrimaryKey: []*schema.Column{UserColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		PostTable,
+		UserTable,
 	}
 )
 
 func init() {
 	PostTable.Annotation = &entsql.Annotation{
 		Table: "post",
+	}
+	UserTable.Annotation = &entsql.Annotation{
+		Table: "user",
 	}
 }
