@@ -18,7 +18,7 @@ func NewPostRepository(db *ent.Client) PostRepository {
 }
 
 func (r *repo) FindAll() ([]*entity.Post, error) {
-	results, err := r.db.Post.Query().All(r.ctx)
+	results, err := r.db.Post.Query().WithUser().All(r.ctx)
 
 	if err != nil {
 		return nil, err
@@ -27,15 +27,8 @@ func (r *repo) FindAll() ([]*entity.Post, error) {
 	posts := []*entity.Post{}
 
 	for _, result := range results {
-		post := entity.Post{
-			Title: result.Title,
-			Text:  result.Text,
-			Model: entity.Model{
-				ID:        result.ID,
-				CreatedAt: result.CreatedAt,
-				UpdatedAt: result.UpdatedAt,
-			},
-		}
+		post := entity.Post{}
+		post.MapFromSchema(result)
 
 		posts = append(posts, &post)
 	}
@@ -44,7 +37,7 @@ func (r *repo) FindAll() ([]*entity.Post, error) {
 }
 
 func (r *repo) FindById(id int) (*entity.Post, error) {
-	result, err := r.db.Post.Query().Where(entPost.ID(id)).Only(r.ctx)
+	result, err := r.db.Post.Query().WithUser().Where(entPost.ID(id)).Only(r.ctx)
 
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -54,35 +47,22 @@ func (r *repo) FindById(id int) (*entity.Post, error) {
 		return nil, err
 	}
 
-	post := entity.Post{
-		Title: result.Title,
-		Text:  result.Text,
-		Model: entity.Model{
-			ID:        result.ID,
-			CreatedAt: result.CreatedAt,
-			UpdatedAt: result.UpdatedAt,
-		},
-	}
+	post := entity.Post{}
+	post.MapFromSchema(result)
 
 	return &post, err
 }
 
 func (r *repo) Create(post *entity.Post) (*entity.Post, error) {
-	result, err := r.db.Post.Create().SetTitle(post.Text).SetText(post.Text).Save(r.ctx)
+	// TODO: get userId from post
+	result, err := r.db.Post.Create().SetTitle(post.Text).SetText(post.Text).SetUser(&ent.User{ID: 1}).Save(r.ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
-	newPost := entity.Post{
-		Title: result.Title,
-		Text:  result.Text,
-		Model: entity.Model{
-			ID:        result.ID,
-			CreatedAt: result.CreatedAt,
-			UpdatedAt: result.UpdatedAt,
-		},
-	}
+	newPost := entity.Post{}
+	newPost.MapFromSchema(result)
 
 	return &newPost, err
 }

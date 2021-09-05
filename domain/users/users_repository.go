@@ -32,14 +32,8 @@ func (r *repo) FindAll() ([]*entity.User, error) {
 	users := []*entity.User{}
 
 	for _, result := range results {
-		user := entity.User{
-			Email: result.Email,
-			Model: entity.Model{
-				ID:        result.ID,
-				CreatedAt: result.CreatedAt,
-				UpdatedAt: result.UpdatedAt,
-			},
-		}
+		user := entity.User{}
+		user.MapFromSchema(result)
 
 		users = append(users, &user)
 	}
@@ -63,14 +57,8 @@ func (r *repo) FindById(id int) (*entity.User, error) {
 		return nil, err
 	}
 
-	user := entity.User{
-		Email: result.Email,
-		Model: entity.Model{
-			ID:        result.ID,
-			CreatedAt: result.CreatedAt,
-			UpdatedAt: result.UpdatedAt,
-		},
-	}
+	user := entity.User{}
+	user.MapFromSchema(result)
 
 	return &user, err
 }
@@ -82,14 +70,8 @@ func (r *repo) Create(user *entity.User) (*entity.User, error) {
 		return nil, err
 	}
 
-	newUser := entity.User{
-		Email: result.Email,
-		Model: entity.Model{
-			ID:        result.ID,
-			CreatedAt: result.CreatedAt,
-			UpdatedAt: result.UpdatedAt,
-		},
-	}
+	newUser := entity.User{}
+	newUser.MapFromSchema(result)
 
 	return &newUser, err
 }
