@@ -21,18 +21,6 @@ type PostCreate struct {
 	hooks    []Hook
 }
 
-// SetTitle sets the "title" field.
-func (pc *PostCreate) SetTitle(s string) *PostCreate {
-	pc.mutation.SetTitle(s)
-	return pc
-}
-
-// SetText sets the "text" field.
-func (pc *PostCreate) SetText(s string) *PostCreate {
-	pc.mutation.SetText(s)
-	return pc
-}
-
 // SetCreatedAt sets the "createdAt" field.
 func (pc *PostCreate) SetCreatedAt(t time.Time) *PostCreate {
 	pc.mutation.SetCreatedAt(t)
@@ -58,6 +46,18 @@ func (pc *PostCreate) SetNillableUpdatedAt(t *time.Time) *PostCreate {
 	if t != nil {
 		pc.SetUpdatedAt(*t)
 	}
+	return pc
+}
+
+// SetTitle sets the "title" field.
+func (pc *PostCreate) SetTitle(s string) *PostCreate {
+	pc.mutation.SetTitle(s)
+	return pc
+}
+
+// SetText sets the "text" field.
+func (pc *PostCreate) SetText(s string) *PostCreate {
+	pc.mutation.SetText(s)
 	return pc
 }
 
@@ -163,17 +163,17 @@ func (pc *PostCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (pc *PostCreate) check() error {
-	if _, ok := pc.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "title"`)}
-	}
-	if _, ok := pc.mutation.Text(); !ok {
-		return &ValidationError{Name: "text", err: errors.New(`ent: missing required field "text"`)}
-	}
 	if _, ok := pc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "createdAt"`)}
 	}
 	if _, ok := pc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "updatedAt"`)}
+	}
+	if _, ok := pc.mutation.Title(); !ok {
+		return &ValidationError{Name: "title", err: errors.New(`ent: missing required field "title"`)}
+	}
+	if _, ok := pc.mutation.Text(); !ok {
+		return &ValidationError{Name: "text", err: errors.New(`ent: missing required field "text"`)}
 	}
 	return nil
 }
@@ -202,22 +202,6 @@ func (pc *PostCreate) createSpec() (*Post, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
-	if value, ok := pc.mutation.Title(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: post.FieldTitle,
-		})
-		_node.Title = value
-	}
-	if value, ok := pc.mutation.Text(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: post.FieldText,
-		})
-		_node.Text = value
-	}
 	if value, ok := pc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
@@ -233,6 +217,22 @@ func (pc *PostCreate) createSpec() (*Post, *sqlgraph.CreateSpec) {
 			Column: post.FieldUpdatedAt,
 		})
 		_node.UpdatedAt = value
+	}
+	if value, ok := pc.mutation.Title(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: post.FieldTitle,
+		})
+		_node.Title = value
+	}
+	if value, ok := pc.mutation.Text(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: post.FieldText,
+		})
+		_node.Text = value
 	}
 	if nodes := pc.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

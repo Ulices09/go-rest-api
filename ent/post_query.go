@@ -291,12 +291,12 @@ func (pq *PostQuery) WithUser(opts ...func(*UserQuery)) *PostQuery {
 // Example:
 //
 //	var v []struct {
-//		Title string `json:"title,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Post.Query().
-//		GroupBy(post.FieldTitle).
+//		GroupBy(post.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -318,11 +318,11 @@ func (pq *PostQuery) GroupBy(field string, fields ...string) *PostGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Title string `json:"title,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.Post.Query().
-//		Select(post.FieldTitle).
+//		Select(post.FieldCreatedAt).
 //		Scan(ctx, &v)
 //
 func (pq *PostQuery) Select(fields ...string) *PostSelect {

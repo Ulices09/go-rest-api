@@ -12,10 +12,10 @@ var (
 	// PostColumns holds the columns for the "post" table.
 	PostColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "title", Type: field.TypeString},
-		{Name: "text", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "title", Type: field.TypeString},
+		{Name: "text", Type: field.TypeString},
 		{Name: "user_posts", Type: field.TypeInt, Nullable: true},
 	}
 	// PostTable holds the schema information for the "post" table.
@@ -35,10 +35,10 @@ var (
 	// UserColumns holds the columns for the "user" table.
 	UserColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "email", Type: field.TypeString},
-		{Name: "password", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "email", Type: field.TypeString},
+		{Name: "password", Type: field.TypeString},
 	}
 	// UserTable holds the schema information for the "user" table.
 	UserTable = &schema.Table{

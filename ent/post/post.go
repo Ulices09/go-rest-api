@@ -11,14 +11,14 @@ const (
 	Label = "post"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldTitle holds the string denoting the title field in the database.
-	FieldTitle = "title"
-	// FieldText holds the string denoting the text field in the database.
-	FieldText = "text"
 	// FieldCreatedAt holds the string denoting the createdat field in the database.
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
 	FieldUpdatedAt = "updated_at"
+	// FieldTitle holds the string denoting the title field in the database.
+	FieldTitle = "title"
+	// FieldText holds the string denoting the text field in the database.
+	FieldText = "text"
 	// EdgeUser holds the string denoting the user edge name in mutations.
 	EdgeUser = "user"
 	// Table holds the table name of the post in the database.
@@ -35,10 +35,10 @@ const (
 // Columns holds all SQL columns for post fields.
 var Columns = []string{
 	FieldID,
-	FieldTitle,
-	FieldText,
 	FieldCreatedAt,
 	FieldUpdatedAt,
+	FieldTitle,
+	FieldText,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the "post"
@@ -67,4 +67,6 @@ var (
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
 	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	UpdateDefaultUpdatedAt func() time.Time
 )

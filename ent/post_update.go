@@ -28,6 +28,12 @@ func (pu *PostUpdate) Where(ps ...predicate.Post) *PostUpdate {
 	return pu
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (pu *PostUpdate) SetUpdatedAt(t time.Time) *PostUpdate {
+	pu.mutation.SetUpdatedAt(t)
+	return pu
+}
+
 // SetTitle sets the "title" field.
 func (pu *PostUpdate) SetTitle(s string) *PostUpdate {
 	pu.mutation.SetTitle(s)
@@ -37,34 +43,6 @@ func (pu *PostUpdate) SetTitle(s string) *PostUpdate {
 // SetText sets the "text" field.
 func (pu *PostUpdate) SetText(s string) *PostUpdate {
 	pu.mutation.SetText(s)
-	return pu
-}
-
-// SetCreatedAt sets the "createdAt" field.
-func (pu *PostUpdate) SetCreatedAt(t time.Time) *PostUpdate {
-	pu.mutation.SetCreatedAt(t)
-	return pu
-}
-
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
-func (pu *PostUpdate) SetNillableCreatedAt(t *time.Time) *PostUpdate {
-	if t != nil {
-		pu.SetCreatedAt(*t)
-	}
-	return pu
-}
-
-// SetUpdatedAt sets the "updatedAt" field.
-func (pu *PostUpdate) SetUpdatedAt(t time.Time) *PostUpdate {
-	pu.mutation.SetUpdatedAt(t)
-	return pu
-}
-
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
-func (pu *PostUpdate) SetNillableUpdatedAt(t *time.Time) *PostUpdate {
-	if t != nil {
-		pu.SetUpdatedAt(*t)
-	}
 	return pu
 }
 
@@ -104,6 +82,7 @@ func (pu *PostUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	pu.defaults()
 	if len(pu.hooks) == 0 {
 		affected, err = pu.sqlSave(ctx)
 	} else {
@@ -152,6 +131,14 @@ func (pu *PostUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (pu *PostUpdate) defaults() {
+	if _, ok := pu.mutation.UpdatedAt(); !ok {
+		v := post.UpdateDefaultUpdatedAt()
+		pu.mutation.SetUpdatedAt(v)
+	}
+}
+
 func (pu *PostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -170,6 +157,13 @@ func (pu *PostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := pu.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: post.FieldUpdatedAt,
+		})
+	}
 	if value, ok := pu.mutation.Title(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -182,20 +176,6 @@ func (pu *PostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: post.FieldText,
-		})
-	}
-	if value, ok := pu.mutation.CreatedAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: post.FieldCreatedAt,
-		})
-	}
-	if value, ok := pu.mutation.UpdatedAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: post.FieldUpdatedAt,
 		})
 	}
 	if pu.mutation.UserCleared() {
@@ -252,6 +232,12 @@ type PostUpdateOne struct {
 	mutation *PostMutation
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (puo *PostUpdateOne) SetUpdatedAt(t time.Time) *PostUpdateOne {
+	puo.mutation.SetUpdatedAt(t)
+	return puo
+}
+
 // SetTitle sets the "title" field.
 func (puo *PostUpdateOne) SetTitle(s string) *PostUpdateOne {
 	puo.mutation.SetTitle(s)
@@ -261,34 +247,6 @@ func (puo *PostUpdateOne) SetTitle(s string) *PostUpdateOne {
 // SetText sets the "text" field.
 func (puo *PostUpdateOne) SetText(s string) *PostUpdateOne {
 	puo.mutation.SetText(s)
-	return puo
-}
-
-// SetCreatedAt sets the "createdAt" field.
-func (puo *PostUpdateOne) SetCreatedAt(t time.Time) *PostUpdateOne {
-	puo.mutation.SetCreatedAt(t)
-	return puo
-}
-
-// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
-func (puo *PostUpdateOne) SetNillableCreatedAt(t *time.Time) *PostUpdateOne {
-	if t != nil {
-		puo.SetCreatedAt(*t)
-	}
-	return puo
-}
-
-// SetUpdatedAt sets the "updatedAt" field.
-func (puo *PostUpdateOne) SetUpdatedAt(t time.Time) *PostUpdateOne {
-	puo.mutation.SetUpdatedAt(t)
-	return puo
-}
-
-// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
-func (puo *PostUpdateOne) SetNillableUpdatedAt(t *time.Time) *PostUpdateOne {
-	if t != nil {
-		puo.SetUpdatedAt(*t)
-	}
 	return puo
 }
 
@@ -335,6 +293,7 @@ func (puo *PostUpdateOne) Save(ctx context.Context) (*Post, error) {
 		err  error
 		node *Post
 	)
+	puo.defaults()
 	if len(puo.hooks) == 0 {
 		node, err = puo.sqlSave(ctx)
 	} else {
@@ -383,6 +342,14 @@ func (puo *PostUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (puo *PostUpdateOne) defaults() {
+	if _, ok := puo.mutation.UpdatedAt(); !ok {
+		v := post.UpdateDefaultUpdatedAt()
+		puo.mutation.SetUpdatedAt(v)
+	}
+}
+
 func (puo *PostUpdateOne) sqlSave(ctx context.Context) (_node *Post, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -418,6 +385,13 @@ func (puo *PostUpdateOne) sqlSave(ctx context.Context) (_node *Post, err error) 
 			}
 		}
 	}
+	if value, ok := puo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: post.FieldUpdatedAt,
+		})
+	}
 	if value, ok := puo.mutation.Title(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -430,20 +404,6 @@ func (puo *PostUpdateOne) sqlSave(ctx context.Context) (_node *Post, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: post.FieldText,
-		})
-	}
-	if value, ok := puo.mutation.CreatedAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: post.FieldCreatedAt,
-		})
-	}
-	if value, ok := puo.mutation.UpdatedAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Value:  value,
-			Column: post.FieldUpdatedAt,
 		})
 	}
 	if puo.mutation.UserCleared() {
