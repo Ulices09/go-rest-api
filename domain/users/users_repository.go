@@ -18,7 +18,7 @@ func NewUserRepository(db *ent.Client) UserRepository {
 }
 
 func (r *repo) FindAll() ([]*entity.User, error) {
-	results, err := r.db.User.Query().Select(
+	results, err := r.db.User.Query().WithPosts().Select(
 		entUser.FieldID,
 		entUser.FieldEmail,
 		entUser.FieldCreatedAt,
@@ -47,7 +47,7 @@ func (r *repo) FindById(id int) (*entity.User, error) {
 		entUser.FieldEmail,
 		entUser.FieldCreatedAt,
 		entUser.FieldUpdatedAt,
-	).Where(entUser.ID(id)).Only(r.ctx)
+	).WithPosts().Where(entUser.ID(id)).Only(r.ctx)
 
 	if err != nil {
 		if ent.IsNotFound(err) {
