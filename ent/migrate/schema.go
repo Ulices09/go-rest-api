@@ -16,12 +16,21 @@ var (
 		{Name: "text", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "user_posts", Type: field.TypeInt, Nullable: true},
 	}
 	// PostTable holds the schema information for the "post" table.
 	PostTable = &schema.Table{
 		Name:       "post",
 		Columns:    PostColumns,
 		PrimaryKey: []*schema.Column{PostColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "post_user_posts",
+				Columns:    []*schema.Column{PostColumns[5]},
+				RefColumns: []*schema.Column{UserColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// UserColumns holds the columns for the "user" table.
 	UserColumns = []*schema.Column{
@@ -45,6 +54,7 @@ var (
 )
 
 func init() {
+	PostTable.ForeignKeys[0].RefTable = UserTable
 	PostTable.Annotation = &entsql.Annotation{
 		Table: "post",
 	}

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"go-rest-api/ent/post"
+	"go-rest-api/ent/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -58,6 +59,25 @@ func (pc *PostCreate) SetNillableUpdatedAt(t *time.Time) *PostCreate {
 		pc.SetUpdatedAt(*t)
 	}
 	return pc
+}
+
+// SetUserID sets the "user" edge to the User entity by ID.
+func (pc *PostCreate) SetUserID(id int) *PostCreate {
+	pc.mutation.SetUserID(id)
+	return pc
+}
+
+// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
+func (pc *PostCreate) SetNillableUserID(id *int) *PostCreate {
+	if id != nil {
+		pc = pc.SetUserID(*id)
+	}
+	return pc
+}
+
+// SetUser sets the "user" edge to the User entity.
+func (pc *PostCreate) SetUser(u *User) *PostCreate {
+	return pc.SetUserID(u.ID)
 }
 
 // Mutation returns the PostMutation object of the builder.
@@ -213,6 +233,26 @@ func (pc *PostCreate) createSpec() (*Post, *sqlgraph.CreateSpec) {
 			Column: post.FieldUpdatedAt,
 		})
 		_node.UpdatedAt = value
+	}
+	if nodes := pc.mutation.UserIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   post.UserTable,
+			Columns: []string{post.UserColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: user.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.user_posts = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

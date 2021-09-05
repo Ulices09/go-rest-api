@@ -19,8 +19,17 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
 	FieldUpdatedAt = "updated_at"
+	// EdgePosts holds the string denoting the posts edge name in mutations.
+	EdgePosts = "posts"
 	// Table holds the table name of the user in the database.
 	Table = "user"
+	// PostsTable is the table that holds the posts relation/edge.
+	PostsTable = "post"
+	// PostsInverseTable is the table name for the Post entity.
+	// It exists in this package in order to avoid circular dependency with the "post" package.
+	PostsInverseTable = "post"
+	// PostsColumn is the table column denoting the posts relation/edge.
+	PostsColumn = "user_posts"
 )
 
 // Columns holds all SQL columns for user fields.

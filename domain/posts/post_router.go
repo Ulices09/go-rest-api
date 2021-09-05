@@ -4,9 +4,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func NewPostRouter(e *echo.Echo, postController PostController) {
+func NewPostRouter(e *echo.Echo, co PostController) {
 	postsGroup := e.Group("/posts")
-	postsGroup.GET("", postController.GetPosts)
-	postsGroup.GET("/:id", postController.GetPost)
-	postsGroup.POST("", postController.CreatePost)
+	postsGroup.GET("", co.GetPosts)
+	postsGroup.GET("/:id", co.GetPost)
+	postsGroup.POST("", co.CreatePost)
 }

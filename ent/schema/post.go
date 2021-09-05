@@ -6,6 +6,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -23,7 +24,11 @@ func (Post) Fields() []ent.Field {
 }
 
 func (Post) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.From("user", User.Type).
+			Ref("posts").
+			Unique(),
+	}
 }
 
 func (Post) Annotations() []schema.Annotation {
