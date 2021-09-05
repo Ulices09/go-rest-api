@@ -12,6 +12,8 @@ import (
 
 type AuthController interface {
 	Login(c echo.Context) error
+	Logout(c echo.Context) error
+	Test(c echo.Context) error
 }
 
 type AuthService interface {

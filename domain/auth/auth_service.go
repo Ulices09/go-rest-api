@@ -25,9 +25,9 @@ func (s *service) Login(email, password string) (user *entity.User, err error) {
 		return nil, errors.New("incorrect credentials")
 	}
 
-	g := utils.CompareHash(password, user.Password)
+	passwordOk := utils.CompareHash(password, user.Password)
 
-	if !g {
+	if !passwordOk {
 		return nil, errors.New("incorrect credentials")
 	}
 

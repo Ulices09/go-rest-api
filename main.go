@@ -20,12 +20,13 @@ func main() {
 	db := db.InitDb(config)
 	defer db.Close()
 
-	server := app.New(config)
+	cMiddleware := app.InitMiddlware(config)
+	server := app.New(config, cMiddleware)
 
 	authRepo := auth.NewAuthRepository(db)
 	authService := auth.NewAuthService(authRepo)
 	authController := auth.NewAuthController(authService)
-	auth.NewAuthRouter(server, authController)
+	auth.NewAuthRouter(server, authController, cMiddleware)
 
 	userRepo := users.NewUserRepository(db)
 	userService := users.NewUserService(userRepo)
