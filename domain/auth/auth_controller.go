@@ -2,10 +2,9 @@ package auth
 
 import (
 	"go-rest-api/entity"
+	"go-rest-api/utils"
 	"net/http"
-	"time"
 
-	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 )
 
@@ -35,23 +34,15 @@ func (co *controller) Login(c echo.Context) (err error) {
 	}
 
 	// TODO: mover a propio módulo para lógica de jwt y mover al service
-	expiredTime := time.Now().Add(time.Minute * 604800)
-	claims := &entity.Claims{
-		ID:    user.ID,
-		Email: user.Email,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expiredTime.Unix(),
-		},
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString([]byte("j7C6WjYm9DG9xWVe"))
+	token, err := utils.SignAuthJwt(*user, "j7C6WjYm9DG9xWVe", 604800)
+
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
 	c.SetCookie(&http.Cookie{
 		Name:     "session-token",
-		Value:    signedToken,
+		Value:    token,
 		Secure:   false, // TODO: poner true para producción
 		HttpOnly: true,
 	})

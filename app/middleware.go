@@ -1,9 +1,8 @@
 package app
 
 import (
-	"fmt"
 	"go-rest-api/config"
-	"go-rest-api/entity"
+	"go-rest-api/utils"
 	"net/http"
 
 	"github.com/golang-jwt/jwt"
@@ -54,12 +53,7 @@ func (*CustomMiddleware) Auth() echo.MiddlewareFunc {
 			}
 
 			// TODO: mover a propio módulo para lógica de jwt y mover al service
-			token, err := jwt.ParseWithClaims(tokenCookie.Value, &entity.Claims{}, func(token *jwt.Token) (interface{}, error) {
-				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-				}
-				return []byte("j7C6WjYm9DG9xWVe"), nil
-			})
+			token, err := utils.VerifyJwt(tokenCookie.Value, "j7C6WjYm9DG9xWVe")
 
 			if err != nil {
 				return c.JSON(http.StatusUnauthorized, jwt.ErrInvalidKey)
