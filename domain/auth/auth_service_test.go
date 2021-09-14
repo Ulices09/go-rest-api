@@ -1,6 +1,7 @@
 package auth_test
 
 import (
+	"go-rest-api/config"
 	"go-rest-api/domain/auth"
 	"go-rest-api/entity"
 	"testing"
@@ -33,15 +34,24 @@ func (m *MockRepository) GetUser(email string) (*entity.User, error) {
   Test data
 */
 
-var userSample = entity.User{
-	Email:    "user1@email.com",
-	Password: "$2a$10$KNX98LHqcr6uX58oA1vwAuwMPP2aOlFnc1ygBcMwBulRcroABJbDW",
-	Model: entity.Model{
-		ID:        1,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	},
-}
+var (
+	userSample = entity.User{
+		Email:    "user1@email.com",
+		Password: "$2a$10$KNX98LHqcr6uX58oA1vwAuwMPP2aOlFnc1ygBcMwBulRcroABJbDW",
+		Model: entity.Model{
+			ID:        1,
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
+
+	configSample = config.Config{
+		Jwt: config.JwtConfig{
+			Secret:     "mytestsecret",
+			Expiration: 1000,
+		},
+	}
+)
 
 /*
   Test functions
@@ -53,7 +63,7 @@ func TestLogin(t *testing.T) {
 	email := "user1@email.com"
 	password := "1234"
 
-	service := auth.NewAuthService(mockRepo)
+	service := auth.NewAuthService(mockRepo, configSample)
 	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
@@ -70,7 +80,7 @@ func TestLogin_IncorrectEmail(t *testing.T) {
 	email := "user1@email.com"
 	password := "1234"
 
-	service := auth.NewAuthService(mockRepo)
+	service := auth.NewAuthService(mockRepo, configSample)
 	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
@@ -86,7 +96,7 @@ func TestLogin_IncorrectPassword(t *testing.T) {
 	email := "user1@email.com"
 	password := "incorrect-password"
 
-	service := auth.NewAuthService(mockRepo)
+	service := auth.NewAuthService(mockRepo, configSample)
 	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)

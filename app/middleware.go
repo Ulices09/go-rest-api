@@ -43,7 +43,7 @@ func (*CustomMiddleware) Secure() echo.MiddlewareFunc {
 	return middleware.Secure()
 }
 
-func (*CustomMiddleware) Auth() echo.MiddlewareFunc {
+func (m *CustomMiddleware) Auth() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			tokenCookie, err := c.Cookie("session-token")
@@ -53,7 +53,7 @@ func (*CustomMiddleware) Auth() echo.MiddlewareFunc {
 			}
 
 			// TODO: obtener secret de env
-			token, err := utils.VerifyJwt(tokenCookie.Value, "j7C6WjYm9DG9xWVe")
+			token, err := utils.VerifyJwt(tokenCookie.Value, m.config.Jwt.Secret)
 
 			if err != nil {
 				return c.JSON(http.StatusUnauthorized, jwt.ErrInvalidKey)

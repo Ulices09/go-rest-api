@@ -2,16 +2,18 @@ package auth
 
 import (
 	"errors"
+	"go-rest-api/config"
 	"go-rest-api/entity"
 	"go-rest-api/utils"
 )
 
 type service struct {
 	authRepo AuthRepository
+	config   config.Config
 }
 
-func NewAuthService(authRepo AuthRepository) AuthService {
-	return &service{authRepo}
+func NewAuthService(authRepo AuthRepository, config config.Config) AuthService {
+	return &service{authRepo: authRepo, config: config}
 }
 
 func (s *service) Login(email, password string) (user *entity.User, token string, err error) {
@@ -33,7 +35,7 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 
 	user.Password = ""
 
-	token, err = utils.SignAuthJwt(*user, "j7C6WjYm9DG9xWVe", 604800)
+	token, err = utils.SignAuthJwt(*user, s.config.Jwt.Secret, s.config.Jwt.Expiration)
 
 	if err != nil {
 		return

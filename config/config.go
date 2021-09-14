@@ -5,6 +5,7 @@ import "github.com/spf13/viper"
 type Config struct {
 	DB   DBConfig   `mapstructure:",squash"`
 	Host HostConfig `mapstructure:",squash"`
+	Jwt  JwtConfig  `mapstructure:",squash"`
 }
 
 type DBConfig struct {
@@ -20,6 +21,11 @@ type HostConfig struct {
 	AllowOrigins []string `mapstructure:"HOST_ALLOW_ORIGINS"`
 }
 
+type JwtConfig struct {
+	Secret     string `mapstructure:"JWT_SECRET"`
+	Expiration int    `mapstructure:"JWT_EXPIRATION"`
+}
+
 func LoadConfig(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("config")
@@ -31,6 +37,8 @@ func LoadConfig(path string) (config Config, err error) {
 	viper.SetDefault("DB_USER", "root")
 	viper.SetDefault("DB_PASSWORD", "root")
 	viper.SetDefault("DB_PORT", "3306")
+	viper.SetDefault("JWT_SECRET", "mydevsecret")
+	viper.SetDefault("JWT_EXPIRATION", 604800)
 
 	if err = viper.ReadInConfig(); err != nil {
 		return
