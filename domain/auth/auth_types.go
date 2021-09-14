@@ -13,15 +13,16 @@ import (
 type AuthController interface {
 	Login(c echo.Context) error
 	Logout(c echo.Context) error
-	Test(c echo.Context) error
+	Me(c echo.Context) error
 }
 
 type AuthService interface {
 	Login(email, password string) (*entity.User, string, error)
+	Me(email string) (*entity.User, error)
 }
 
 type AuthRepository interface {
-	GetUser(email string) (*entity.User, error)
+	GetUserByEmail(email string) (*entity.User, error)
 }
 
 /*

@@ -17,7 +17,7 @@ func NewAuthRepository(db *ent.Client) AuthRepository {
 	return &repo{db: db, ctx: ctx}
 }
 
-func (r *repo) GetUser(email string) (*entity.User, error) {
+func (r *repo) GetUserByEmail(email string) (*entity.User, error) {
 	result, err := r.db.User.Query().Where(entUser.Email(email)).Only(r.ctx)
 
 	if err != nil {

@@ -1,6 +1,7 @@
 package auth_test
 
 import (
+	"errors"
 	"go-rest-api/config"
 	"go-rest-api/domain/auth"
 	"go-rest-api/entity"
@@ -19,7 +20,7 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) GetUser(email string) (*entity.User, error) {
+func (m *MockRepository) GetUserByEmail(email string) (*entity.User, error) {
 	args := m.Called()
 	result := args.Get(0)
 
@@ -51,6 +52,8 @@ var (
 			Expiration: 1000,
 		},
 	}
+
+	errorSample = errors.New("sample error")
 )
 
 /*
@@ -58,7 +61,7 @@ var (
 */
 func TestLogin(t *testing.T) {
 	mockRepo := new(MockRepository)
-	mockRepo.On("GetUser").Return(&userSample, nil)
+	mockRepo.On("GetUserByEmail").Return(&userSample, nil)
 
 	email := "user1@email.com"
 	password := "1234"
@@ -75,7 +78,7 @@ func TestLogin(t *testing.T) {
 
 func TestLogin_IncorrectEmail(t *testing.T) {
 	mockRepo := new(MockRepository)
-	mockRepo.On("GetUser").Return(nil, nil)
+	mockRepo.On("GetUserByEmail").Return(nil, nil)
 
 	email := "user1@email.com"
 	password := "1234"
@@ -91,7 +94,7 @@ func TestLogin_IncorrectEmail(t *testing.T) {
 
 func TestLogin_IncorrectPassword(t *testing.T) {
 	mockRepo := new(MockRepository)
-	mockRepo.On("GetUser").Return(&userSample, nil)
+	mockRepo.On("GetUserByEmail").Return(&userSample, nil)
 
 	email := "user1@email.com"
 	password := "incorrect-password"
@@ -102,5 +105,34 @@ func TestLogin_IncorrectPassword(t *testing.T) {
 	mockRepo.AssertExpectations(t)
 	assert.Nil(t, user)
 	assert.Empty(t, token)
+	assert.NotNil(t, err)
+}
+
+func TestMe(t *testing.T) {
+	mockRepo := new(MockRepository)
+	mockRepo.On("GetUserByEmail").Return(&userSample, nil)
+
+	email := "user1@email.com"
+
+	service := auth.NewAuthService(mockRepo, configSample)
+	user, err := service.Me(email)
+
+	mockRepo.AssertExpectations(t)
+	assert.Equal(t, email, user.Email)
+	assert.Empty(t, user.Password)
+	assert.Nil(t, err)
+}
+
+func TestMe_Failure(t *testing.T) {
+	mockRepo := new(MockRepository)
+	mockRepo.On("GetUserByEmail").Return(nil, errorSample)
+
+	email := "user1@email.com"
+
+	service := auth.NewAuthService(mockRepo, configSample)
+	user, err := service.Me(email)
+
+	mockRepo.AssertExpectations(t)
+	assert.Nil(t, user)
 	assert.NotNil(t, err)
 }

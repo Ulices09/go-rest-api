@@ -17,7 +17,7 @@ func NewAuthService(authRepo AuthRepository, config config.Config) AuthService {
 }
 
 func (s *service) Login(email, password string) (user *entity.User, token string, err error) {
-	user, err = s.authRepo.GetUser(email)
+	user, err = s.authRepo.GetUserByEmail(email)
 
 	if err != nil {
 		return
@@ -40,6 +40,18 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 	if err != nil {
 		return
 	}
+
+	return
+}
+
+func (s *service) Me(email string) (user *entity.User, err error) {
+	user, err = s.authRepo.GetUserByEmail(email)
+
+	if err != nil {
+		return
+	}
+
+	user.Password = ""
 
 	return
 }

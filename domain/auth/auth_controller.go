@@ -53,8 +53,13 @@ func (co *controller) Logout(c echo.Context) (err error) {
 	return c.NoContent(http.StatusOK)
 }
 
-func (co *controller) Test(c echo.Context) (err error) {
+func (co *controller) Me(c echo.Context) error {
 	claims := c.Get("user").(*entity.Claims)
+	user, err := co.authService.Me(claims.Email)
 
-	return c.String(http.StatusOK, "Your are logged in as: "+claims.Email)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, user)
 }
