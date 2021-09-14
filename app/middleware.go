@@ -52,7 +52,6 @@ func (m *CustomMiddleware) Auth() echo.MiddlewareFunc {
 				return c.NoContent(http.StatusUnauthorized)
 			}
 
-			// TODO: obtener secret de env
 			token, err := utils.VerifyJwt(tokenCookie.Value, m.config.Jwt.Secret)
 
 			if err != nil {
