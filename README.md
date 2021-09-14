@@ -1,6 +1,6 @@
 # go-rest-api
 
-# Environment variables
+## Environment variables
 
 Add a config.env file in the root
 
