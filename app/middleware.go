@@ -52,7 +52,7 @@ func (*CustomMiddleware) Auth() echo.MiddlewareFunc {
 				return c.NoContent(http.StatusUnauthorized)
 			}
 
-			// TODO: mover a propio módulo para lógica de jwt y mover al service
+			// TODO: obtener secret de env
 			token, err := utils.VerifyJwt(tokenCookie.Value, "j7C6WjYm9DG9xWVe")
 
 			if err != nil {

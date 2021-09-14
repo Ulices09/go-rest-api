@@ -2,7 +2,6 @@ package auth
 
 import (
 	"go-rest-api/entity"
-	"go-rest-api/utils"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -27,14 +26,7 @@ func (co *controller) Login(c echo.Context) (err error) {
 		return err
 	}
 
-	user, err := co.authService.Login(data.Email, data.Password)
-
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-
-	// TODO: mover a propio módulo para lógica de jwt y mover al service
-	token, err := utils.SignAuthJwt(*user, "j7C6WjYm9DG9xWVe", 604800)
+	user, token, err := co.authService.Login(data.Email, data.Password)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())

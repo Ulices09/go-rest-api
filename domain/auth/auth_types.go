@@ -17,7 +17,7 @@ type AuthController interface {
 }
 
 type AuthService interface {
-	Login(email, password string) (*entity.User, error)
+	Login(email, password string) (*entity.User, string, error)
 }
 
 type AuthRepository interface {

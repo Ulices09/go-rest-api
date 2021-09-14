@@ -54,10 +54,11 @@ func TestLogin(t *testing.T) {
 	password := "1234"
 
 	service := auth.NewAuthService(mockRepo)
-	user, err := service.Login(email, password)
+	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
 	assert.Equal(t, email, user.Email)
+	assert.NotEmpty(t, token)
 	assert.Empty(t, user.Password)
 	assert.Nil(t, err)
 }
@@ -70,10 +71,11 @@ func TestLogin_IncorrectEmail(t *testing.T) {
 	password := "1234"
 
 	service := auth.NewAuthService(mockRepo)
-	user, err := service.Login(email, password)
+	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
 	assert.Nil(t, user)
+	assert.Empty(t, token)
 	assert.NotNil(t, err)
 }
 
@@ -85,9 +87,10 @@ func TestLogin_IncorrectPassword(t *testing.T) {
 	password := "incorrect-password"
 
 	service := auth.NewAuthService(mockRepo)
-	user, err := service.Login(email, password)
+	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
 	assert.Nil(t, user)
+	assert.Empty(t, token)
 	assert.NotNil(t, err)
 }
