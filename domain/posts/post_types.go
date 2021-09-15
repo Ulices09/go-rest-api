@@ -15,11 +15,11 @@ type PostController interface {
 type PostService interface {
 	GetAll() ([]*entity.Post, error)
 	GetById(id int) (*entity.Post, error)
-	Create(post *entity.Post) (*entity.Post, error)
+	Create(post *entity.Post, userId int) (*entity.Post, error)
 }
 
 type PostRepository interface {
 	FindAll() ([]*entity.Post, error)
 	FindById(id int) (*entity.Post, error)
-	Create(post *entity.Post) (*entity.Post, error)
+	Create(post *entity.Post, userId int) (*entity.Post, error)
 }

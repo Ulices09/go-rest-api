@@ -36,7 +36,7 @@ func main() {
 	postRepo := posts.NewPostRepository(db)
 	postService := posts.NewPostService(postRepo)
 	postController := posts.NewPostController(postService)
-	posts.NewPostRouter(server, postController)
+	posts.NewPostRouter(server, postController, cMiddleware)
 
 	server.Logger.Fatal(server.Start((":" + config.Host.Port)))
 }

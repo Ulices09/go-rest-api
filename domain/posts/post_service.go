@@ -20,6 +20,6 @@ func (s *service) GetById(id int) (*entity.Post, error) {
 	return s.postRepo.FindById(id)
 }
 
-func (s *service) Create(post *entity.Post) (*entity.Post, error) {
-	return s.postRepo.Create(post)
+func (s *service) Create(post *entity.Post, userId int) (*entity.Post, error) {
+	return s.postRepo.Create(post, userId)
 }

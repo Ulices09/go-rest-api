@@ -47,6 +47,7 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 }
 
 func (co *controller) CreatePost(c echo.Context) (err error) {
+	claims := c.Get("user").(*entity.Claims)
 	data := new(entity.Post)
 
 	if err = c.Bind(data); err != nil {
@@ -57,7 +58,7 @@ func (co *controller) CreatePost(c echo.Context) (err error) {
 		return err
 	}
 
-	newPost, err := co.postService.Create(data)
+	newPost, err := co.postService.Create(data, claims.ID)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())

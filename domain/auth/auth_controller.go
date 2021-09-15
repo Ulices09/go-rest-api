@@ -37,6 +37,8 @@ func (co *controller) Login(c echo.Context) (err error) {
 		Value:    token,
 		Secure:   false, // TODO: poner true para producción
 		HttpOnly: true,
+		Path:     "/",
+		SameSite: http.SameSiteStrictMode,
 	})
 
 	return c.JSON(http.StatusOK, user)
@@ -48,6 +50,8 @@ func (co *controller) Logout(c echo.Context) (err error) {
 		Secure:   false, // TODO: poner true para producción
 		HttpOnly: true,
 		MaxAge:   -1,
+		Path:     "/",
+		SameSite: http.SameSiteStrictMode,
 	})
 
 	return c.NoContent(http.StatusOK)

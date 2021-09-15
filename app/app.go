@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func New(config config.Config, cMiddleware *CustomMiddleware) *echo.Echo {
+func New(config config.Config, cMiddleware CustomMiddleware) *echo.Echo {
 	e := echo.New()
 
 	e.Validator = &CustomValidator{validator: validator.New()}

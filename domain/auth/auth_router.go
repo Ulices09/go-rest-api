@@ -9,7 +9,7 @@ import (
 func NewAuthRouter(
 	e *echo.Echo,
 	co AuthController,
-	m *app.CustomMiddleware,
+	m app.CustomMiddleware,
 ) {
 	postsGroup := e.Group("/auth")
 	postsGroup.POST("/login", co.Login)

@@ -14,8 +14,8 @@ type CustomMiddleware struct {
 	config config.Config
 }
 
-func InitMiddlware(config config.Config) *CustomMiddleware {
-	return &CustomMiddleware{config}
+func InitMiddlware(config config.Config) CustomMiddleware {
+	return CustomMiddleware{config}
 }
 
 func (*CustomMiddleware) Logger() echo.MiddlewareFunc {

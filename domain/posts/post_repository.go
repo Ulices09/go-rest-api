@@ -37,7 +37,11 @@ func (r *repo) FindAll() ([]*entity.Post, error) {
 }
 
 func (r *repo) FindById(id int) (*entity.Post, error) {
-	result, err := r.db.Post.Query().WithUser().Where(entPost.ID(id)).Only(r.ctx)
+	result, err := r.db.Post.
+		Query().
+		WithUser().
+		Where(entPost.ID(id)).
+		Only(r.ctx)
 
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -53,9 +57,13 @@ func (r *repo) FindById(id int) (*entity.Post, error) {
 	return &post, err
 }
 
-func (r *repo) Create(post *entity.Post) (*entity.Post, error) {
-	// TODO: get userId from post
-	result, err := r.db.Post.Create().SetTitle(post.Text).SetText(post.Text).SetUser(&ent.User{ID: 1}).Save(r.ctx)
+func (r *repo) Create(post *entity.Post, userId int) (*entity.Post, error) {
+	result, err := r.db.Post.
+		Create().
+		SetTitle(post.Text).
+		SetText(post.Text).
+		SetUser(&ent.User{ID: userId}).
+		Save(r.ctx)
 
 	if err != nil {
 		return nil, err
