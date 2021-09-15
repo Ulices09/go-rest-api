@@ -1,6 +1,7 @@
 package posts
 
 import (
+	"go-rest-api/app"
 	"go-rest-api/entity"
 	"net/http"
 	"strconv"
@@ -47,7 +48,7 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 }
 
 func (co *controller) CreatePost(c echo.Context) (err error) {
-	claims := c.Get("user").(*entity.Claims)
+	userClaims := app.GetLoggedInUser(c)
 	data := new(entity.Post)
 
 	if err = c.Bind(data); err != nil {
@@ -58,7 +59,7 @@ func (co *controller) CreatePost(c echo.Context) (err error) {
 		return err
 	}
 
-	newPost, err := co.postService.Create(data, claims.ID)
+	newPost, err := co.postService.Create(data, userClaims.ID)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
