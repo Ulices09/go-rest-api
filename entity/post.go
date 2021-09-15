@@ -6,7 +6,7 @@ type Post struct {
 	Model
 	Title string `json:"title" validate:"required"`
 	Text  string `json:"text" validate:"required"`
-	User  *User  `json:"user"`
+	User  *User  `json:"user,omitempty"`
 }
 
 func (p *Post) MapFromSchema(s *ent.Post) {
