@@ -2,7 +2,7 @@ package posts_test
 
 import (
 	"go-rest-api/domain/posts"
-	"go-rest-api/entity"
+	"go-rest-api/types/entity"
 	"testing"
 	"time"
 

@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"go-rest-api/config"
-	"go-rest-api/entity"
+	"go-rest-api/types/entity"
 	"go-rest-api/utils"
 )
 

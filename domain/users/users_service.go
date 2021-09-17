@@ -1,7 +1,7 @@
 package users
 
 import (
-	"go-rest-api/entity"
+	"go-rest-api/types/entity"
 	"go-rest-api/utils"
 )
 

@@ -2,7 +2,7 @@ package users_test
 
 import (
 	"go-rest-api/domain/users"
-	"go-rest-api/entity"
+	"go-rest-api/types/entity"
 	"testing"
 	"time"
 

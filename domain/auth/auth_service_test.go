@@ -4,7 +4,7 @@ import (
 	"errors"
 	"go-rest-api/config"
 	"go-rest-api/domain/auth"
-	"go-rest-api/entity"
+	"go-rest-api/types/entity"
 	"testing"
 	"time"
 

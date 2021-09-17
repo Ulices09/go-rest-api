@@ -1,7 +1,7 @@
 package posts
 
 import (
-	"go-rest-api/entity"
+	"go-rest-api/types/entity"
 
 	"github.com/labstack/echo/v4"
 )
