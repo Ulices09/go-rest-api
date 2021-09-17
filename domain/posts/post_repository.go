@@ -17,11 +17,25 @@ func NewPostRepository(db *ent.Client) PostRepository {
 	return &repo{db: db, ctx: ctx}
 }
 
-func (r *repo) FindAll() ([]*entity.Post, error) {
-	results, err := r.db.Post.Query().WithUser().All(r.ctx)
+func (r *repo) FindAll(skip, take int) ([]*entity.Post, int, error) {
+	query := r.db.Post.
+		Query().
+		WithUser().
+		Clone()
+
+	count, err := query.Count(r.ctx)
 
 	if err != nil {
-		return nil, err
+		return nil, 0, err
+	}
+
+	results, err := query.
+		Offset(skip).
+		Limit(take).
+		All(r.ctx)
+
+	if err != nil {
+		return nil, 0, err
 	}
 
 	posts := []*entity.Post{}
@@ -33,7 +47,7 @@ func (r *repo) FindAll() ([]*entity.Post, error) {
 		posts = append(posts, &post)
 	}
 
-	return posts, err
+	return posts, count, err
 }
 
 func (r *repo) FindById(id int) (*entity.Post, error) {

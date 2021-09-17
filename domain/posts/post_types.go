@@ -1,6 +1,7 @@
 package posts
 
 import (
+	"go-rest-api/types/dto"
 	"go-rest-api/types/entity"
 
 	"github.com/labstack/echo/v4"
@@ -13,13 +14,13 @@ type PostController interface {
 }
 
 type PostService interface {
-	GetAll() ([]*entity.Post, error)
+	GetAll(query dto.PaginationQuery) (dto.PaginationResult, error)
 	GetById(id int) (*entity.Post, error)
 	Create(post *entity.Post, userId int) (*entity.Post, error)
 }
 
 type PostRepository interface {
-	FindAll() ([]*entity.Post, error)
+	FindAll(skip, take int) ([]*entity.Post, int, error)
 	FindById(id int) (*entity.Post, error)
 	Create(post *entity.Post, userId int) (*entity.Post, error)
 }

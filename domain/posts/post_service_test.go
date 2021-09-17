@@ -2,6 +2,7 @@ package posts_test
 
 import (
 	"go-rest-api/domain/posts"
+	"go-rest-api/types/dto"
 	"go-rest-api/types/entity"
 	"testing"
 	"time"
@@ -18,10 +19,10 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) FindAll() ([]*entity.Post, error) {
+func (m *MockRepository) FindAll(skip, take int) ([]*entity.Post, int, error) {
 	args := m.Called()
 	result := args.Get(0)
-	return result.([]*entity.Post), args.Error(1)
+	return result.([]*entity.Post), args.Int(1), args.Error(2)
 }
 
 func (m *MockRepository) FindById(id int) (*entity.Post, error) {
@@ -40,40 +41,44 @@ func (m *MockRepository) Create(post *entity.Post, userId int) (*entity.Post, er
   Test data
 */
 
-var post1 = entity.Post{
-	Title: "My first post",
-	Text:  "This is my first post",
-	Model: entity.Model{
-		ID:        1,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	},
-}
+var (
+	post1 = entity.Post{
+		Title: "My first post",
+		Text:  "This is my first post",
+		Model: entity.Model{
+			ID:        1,
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
 
-var post2 = entity.Post{
-	Title: "My second post",
-	Text:  "This is my second post",
-	Model: entity.Model{
-		ID:        2,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	},
-}
+	post2 = entity.Post{
+		Title: "My second post",
+		Text:  "This is my second post",
+		Model: entity.Model{
+			ID:        2,
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
 
-var postsData = []*entity.Post{&post1, &post2}
+	postsData = []*entity.Post{&post1, &post2}
+
+	paginationQuery = dto.PaginationQuery{Page: 1, Skip: 0, Take: 10}
+)
 
 /*
   Test functions
 */
 func TestGetAll(t *testing.T) {
 	mockRepo := new(MockRepository)
-	mockRepo.On("FindAll").Return(postsData, nil)
+	mockRepo.On("FindAll").Return(postsData, 100, nil)
 
 	service := posts.NewPostService(mockRepo)
-	posts, err := service.GetAll()
+	result, err := service.GetAll(paginationQuery)
 
 	mockRepo.AssertExpectations(t)
-	assert.Equal(t, 2, len(posts))
+	assert.Equal(t, 2, len(result.Data.([]*entity.Post)))
 	assert.Nil(t, err)
 }
 
