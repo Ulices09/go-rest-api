@@ -1,6 +1,7 @@
 package users
 
 import (
+	"go-rest-api/types/dto"
 	"go-rest-api/types/entity"
 	"go-rest-api/utils"
 )
@@ -13,8 +14,18 @@ func NewUserService(userRepo UserRepository) UserService {
 	return &service{userRepo}
 }
 
-func (s *service) GetAll() ([]*entity.User, error) {
-	return s.userRepo.FindAll()
+func (s *service) GetAll(query dto.ListQuery) (result dto.ListResult, err error) {
+	users, err := s.userRepo.FindAll(query.Filter)
+
+	if err != nil {
+		return
+	}
+
+	result = dto.ListResult{
+		Data: users,
+	}
+
+	return
 }
 
 func (s *service) GetById(id int) (*entity.User, error) {

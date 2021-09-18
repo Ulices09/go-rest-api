@@ -17,13 +17,18 @@ func NewUserRepository(db *ent.Client) UserRepository {
 	return &repo{db: db, ctx: ctx}
 }
 
-func (r *repo) FindAll() ([]*entity.User, error) {
-	results, err := r.db.User.Query().WithPosts().Select(
-		entUser.FieldID,
-		entUser.FieldEmail,
-		entUser.FieldCreatedAt,
-		entUser.FieldUpdatedAt,
-	).All(r.ctx)
+func (r *repo) FindAll(filter string) ([]*entity.User, error) {
+	results, err := r.db.User.
+		Query().
+		WithPosts().
+		Select(
+			entUser.FieldID,
+			entUser.FieldEmail,
+			entUser.FieldCreatedAt,
+			entUser.FieldUpdatedAt,
+		).
+		Where(entUser.EmailContains(filter)).
+		All(r.ctx)
 
 	if err != nil {
 		return nil, err

@@ -2,6 +2,7 @@ package users_test
 
 import (
 	"go-rest-api/domain/users"
+	"go-rest-api/types/dto"
 	"go-rest-api/types/entity"
 	"testing"
 	"time"
@@ -18,7 +19,7 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) FindAll() ([]*entity.User, error) {
+func (m *MockRepository) FindAll(filter string) ([]*entity.User, error) {
 	args := m.Called()
 	result := args.Get(0)
 	return result.([]*entity.User), args.Error(1)
@@ -40,27 +41,31 @@ func (m *MockRepository) Create(post *entity.User) (*entity.User, error) {
   Test data
 */
 
-var user1 = entity.User{
-	Email:    "user1@email.com",
-	Password: "my_hashed_password",
-	Model: entity.Model{
-		ID:        1,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	},
-}
+var (
+	user1 = entity.User{
+		Email:    "user1@email.com",
+		Password: "my_hashed_password",
+		Model: entity.Model{
+			ID:        1,
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
 
-var user2 = entity.User{
-	Email:    "user2@email.com",
-	Password: "my_hashed_password",
-	Model: entity.Model{
-		ID:        2,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	},
-}
+	user2 = entity.User{
+		Email:    "user2@email.com",
+		Password: "my_hashed_password",
+		Model: entity.Model{
+			ID:        2,
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
 
-var usersData = []*entity.User{&user1, &user2}
+	usersData = []*entity.User{&user1, &user2}
+
+	listQuery = dto.ListQuery{Filter: ""}
+)
 
 /*
   Test functions
@@ -70,10 +75,10 @@ func TestGetAll(t *testing.T) {
 	mockRepo.On("FindAll").Return(usersData, nil)
 
 	service := users.NewUserService(mockRepo)
-	posts, err := service.GetAll()
+	result, err := service.GetAll(listQuery)
 
 	mockRepo.AssertExpectations(t)
-	assert.Equal(t, 2, len(posts))
+	assert.Equal(t, 2, len(result.Data.([]*entity.User)))
 	assert.Nil(t, err)
 }
 

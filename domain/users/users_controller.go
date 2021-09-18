@@ -1,6 +1,7 @@
 package users
 
 import (
+	"go-rest-api/app"
 	"go-rest-api/types/entity"
 	"net/http"
 	"strconv"
@@ -17,7 +18,8 @@ func NewUserController(userService UserService) UserController {
 }
 
 func (co *controller) GetUsers(c echo.Context) error {
-	users, err := co.userService.GetAll()
+	query := app.GetListQuery(c)
+	users, err := co.userService.GetAll(query)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
