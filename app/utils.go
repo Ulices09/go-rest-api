@@ -13,7 +13,36 @@ func GetLoggedInUser(c echo.Context) entity.Claims {
 	return *claims
 }
 
-func GetPaginationQuery(c echo.Context) (query *dto.PaginationQuery, err error) {
+func GetListQuery(c echo.Context) (query dto.ListQuery) {
+	filter := c.QueryParam("filter")
+
+	query = dto.ListQuery{
+		Filter: filter,
+	}
+
+	return
+}
+
+func GetListPaginatedQuery(c echo.Context) (query dto.PaginatedListQuery, err error) {
+	paginationQuery, err := GetPaginationQuery(c)
+
+	if err != nil {
+		return
+	}
+
+	filter := c.QueryParam("filter")
+
+	query = dto.PaginatedListQuery{
+		ListQuery: dto.ListQuery{
+			Filter: filter,
+		},
+		PaginationQuery: paginationQuery,
+	}
+
+	return
+}
+
+func GetPaginationQuery(c echo.Context) (query dto.PaginationQuery, err error) {
 	pageQuery := c.QueryParam("page")
 	pageSizeQuery := c.QueryParam("pageSize")
 
@@ -27,7 +56,7 @@ func GetPaginationQuery(c echo.Context) (query *dto.PaginationQuery, err error) 
 		page, err = strconv.Atoi(pageQuery)
 
 		if err != nil {
-			return nil, err
+			return
 		}
 
 		if page > 0 {
@@ -35,7 +64,7 @@ func GetPaginationQuery(c echo.Context) (query *dto.PaginationQuery, err error) 
 				take, err = strconv.Atoi(pageSizeQuery)
 
 				if err != nil {
-					return nil, err
+					return
 				}
 			}
 
@@ -43,11 +72,11 @@ func GetPaginationQuery(c echo.Context) (query *dto.PaginationQuery, err error) 
 		}
 	}
 
-	query = &dto.PaginationQuery{
+	query = dto.PaginationQuery{
 		Page: page,
 		Skip: skip,
 		Take: take,
 	}
 
-	return query, nil
+	return
 }

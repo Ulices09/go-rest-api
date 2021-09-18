@@ -17,10 +17,11 @@ func NewPostRepository(db *ent.Client) PostRepository {
 	return &repo{db: db, ctx: ctx}
 }
 
-func (r *repo) FindAll(skip, take int) ([]*entity.Post, int, error) {
+func (r *repo) FindAll(filter string, skip int, take int) ([]*entity.Post, int, error) {
 	query := r.db.Post.
 		Query().
 		WithUser().
+		Where(entPost.TitleContains(filter)).
 		Clone()
 
 	count, err := query.Count(r.ctx)

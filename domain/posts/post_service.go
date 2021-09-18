@@ -13,8 +13,8 @@ func NewPostService(postRepo PostRepository) PostService {
 	return &service{postRepo}
 }
 
-func (s *service) GetAll(query dto.PaginationQuery) (result dto.PaginationResult, err error) {
-	posts, total, err := s.postRepo.FindAll(query.Skip, query.Take)
+func (s *service) GetAll(query dto.PaginatedListQuery) (result dto.PaginationResult, err error) {
+	posts, total, err := s.postRepo.FindAll(query.Filter, query.Skip, query.Take)
 
 	if err != nil {
 		return

@@ -19,7 +19,7 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) FindAll(skip, take int) ([]*entity.Post, int, error) {
+func (m *MockRepository) FindAll(filter string, skip int, take int) ([]*entity.Post, int, error) {
 	args := m.Called()
 	result := args.Get(0)
 	return result.([]*entity.Post), args.Int(1), args.Error(2)
@@ -64,7 +64,16 @@ var (
 
 	postsData = []*entity.Post{&post1, &post2}
 
-	paginationQuery = dto.PaginationQuery{Page: 1, Skip: 0, Take: 10}
+	paginatedListQuery = dto.PaginatedListQuery{
+		ListQuery: dto.ListQuery{
+			Filter: "",
+		},
+		PaginationQuery: dto.PaginationQuery{
+			Page: 1,
+			Skip: 0,
+			Take: 10,
+		},
+	}
 )
 
 /*
@@ -75,7 +84,7 @@ func TestGetAll(t *testing.T) {
 	mockRepo.On("FindAll").Return(postsData, 100, nil)
 
 	service := posts.NewPostService(mockRepo)
-	result, err := service.GetAll(paginationQuery)
+	result, err := service.GetAll(paginatedListQuery)
 
 	mockRepo.AssertExpectations(t)
 	assert.Equal(t, 2, len(result.Data.([]*entity.Post)))

@@ -14,13 +14,13 @@ type PostController interface {
 }
 
 type PostService interface {
-	GetAll(query dto.PaginationQuery) (dto.PaginationResult, error)
+	GetAll(query dto.PaginatedListQuery) (dto.PaginationResult, error)
 	GetById(id int) (*entity.Post, error)
 	Create(post *entity.Post, userId int) (*entity.Post, error)
 }
 
 type PostRepository interface {
-	FindAll(skip, take int) ([]*entity.Post, int, error)
+	FindAll(filter string, skip int, take int) ([]*entity.Post, int, error)
 	FindById(id int) (*entity.Post, error)
 	Create(post *entity.Post, userId int) (*entity.Post, error)
 }

@@ -19,7 +19,7 @@ func InitDb(config config.Config) *ent.Client {
 		log.Fatalf("Failed opening connection to db: %v", err)
 	}
 
-	client := ent.NewClient(ent.Driver(drv))
+	client := ent.NewClient(ent.Driver(drv)) // logs: ent.Debug()
 
 	if err := client.Schema.Create(context.Background()); err != nil {
 		log.Fatalf("failed creating schema resources: %v", err)

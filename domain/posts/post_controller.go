@@ -18,13 +18,13 @@ func NewPostController(postService PostService) PostController {
 }
 
 func (co *controller) GetPosts(c echo.Context) error {
-	paginationQuery, err := app.GetPaginationQuery(c)
+	query, err := app.GetListPaginatedQuery(c)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	result, err := co.postService.GetAll(*paginationQuery)
+	result, err := co.postService.GetAll(query)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
