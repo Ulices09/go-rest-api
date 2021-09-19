@@ -1,8 +1,8 @@
 package users
 
 import (
-	"go-rest-api/internal/types/dto"
-	"go-rest-api/internal/types/entity"
+	"go-rest-api/internal/core/dto"
+	"go-rest-api/internal/core/entity"
 
 	"github.com/labstack/echo/v4"
 )

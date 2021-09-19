@@ -4,7 +4,7 @@ import (
 	"context"
 	"go-rest-api/ent"
 	entUser "go-rest-api/ent/user"
-	"go-rest-api/internal/types/entity"
+	"go-rest-api/internal/core/entity"
 )
 
 type repo struct {

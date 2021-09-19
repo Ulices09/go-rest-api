@@ -2,7 +2,7 @@ package posts
 
 import (
 	"go-rest-api/internal/app"
-	"go-rest-api/internal/types/entity"
+	"go-rest-api/internal/core/entity"
 	"net/http"
 	"strconv"
 
