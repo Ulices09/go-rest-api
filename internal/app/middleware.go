@@ -55,6 +55,15 @@ func (m *CustomMiddleware) Auth() echo.MiddlewareFunc {
 			token, err := utils.VerifyJwt(tokenCookie.Value, m.config.Jwt.Secret)
 
 			if err != nil {
+				c.SetCookie(&http.Cookie{
+					Name:     "session-token",
+					Secure:   false, // TODO: poner true para producción
+					HttpOnly: true,
+					MaxAge:   -1,
+					Path:     "/",
+					SameSite: http.SameSiteStrictMode,
+				})
+
 				return c.JSON(http.StatusUnauthorized, jwt.ErrInvalidKey)
 			}
 
