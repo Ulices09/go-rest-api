@@ -4,7 +4,7 @@ import (
 	"errors"
 	"go-rest-api/internal/config"
 	"go-rest-api/internal/core/entity"
-	"go-rest-api/internal/utils"
+	"go-rest-api/internal/core/utils"
 )
 
 type service struct {
