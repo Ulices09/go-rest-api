@@ -3,10 +3,10 @@ package main
 import (
 	"go-rest-api/internal/app"
 	"go-rest-api/internal/config"
-	"go-rest-api/internal/db"
 	"go-rest-api/internal/domain/auth"
 	"go-rest-api/internal/domain/posts"
 	"go-rest-api/internal/domain/users"
+	"go-rest-api/internal/infrastructure/db"
 	"log"
 )
 
