@@ -1,4 +1,4 @@
-package app
+package httpapp
 
 type ErrorField struct {
 	Field   string `json:"field"`

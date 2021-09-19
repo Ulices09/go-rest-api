@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"go-rest-api/internal/app"
+	httpapp "go-rest-api/internal/http"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -58,7 +58,7 @@ func (co *controller) Logout(c echo.Context) (err error) {
 }
 
 func (co *controller) Me(c echo.Context) error {
-	userClaims := app.GetLoggedInUser(c)
+	userClaims := httpapp.GetLoggedInUser(c)
 	user, err := co.authService.Me(userClaims.Email)
 
 	if err != nil {

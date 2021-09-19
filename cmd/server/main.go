@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-rest-api/internal/app"
 	"go-rest-api/internal/config"
+	httpapp "go-rest-api/internal/http"
 	"go-rest-api/internal/infrastructure/db"
 	"go-rest-api/internal/modules/auth"
 	"go-rest-api/internal/modules/posts"
@@ -20,8 +20,8 @@ func main() {
 	db := db.InitDb(config)
 	defer db.Close()
 
-	cMiddleware := app.InitMiddlware(config)
-	server := app.New(config, cMiddleware)
+	cMiddleware := httpapp.InitMiddlware(config)
+	server := httpapp.New(config, cMiddleware)
 
 	authRepo := auth.NewAuthRepository(db)
 	authService := auth.NewAuthService(authRepo, config)

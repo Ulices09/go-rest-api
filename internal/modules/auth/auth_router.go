@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"go-rest-api/internal/app"
+	httpapp "go-rest-api/internal/http"
 
 	"github.com/labstack/echo/v4"
 )
@@ -9,7 +9,7 @@ import (
 func NewAuthRouter(
 	e *echo.Echo,
 	co AuthController,
-	m app.CustomMiddleware,
+	m httpapp.CustomMiddleware,
 ) {
 	postsGroup := e.Group("/auth")
 	postsGroup.POST("/login", co.Login)

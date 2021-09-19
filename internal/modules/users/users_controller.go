@@ -1,8 +1,8 @@
 package users
 
 import (
-	"go-rest-api/internal/app"
 	"go-rest-api/internal/core/entity"
+	httpapp "go-rest-api/internal/http"
 	"net/http"
 	"strconv"
 
@@ -18,7 +18,7 @@ func NewUserController(userService UserService) UserController {
 }
 
 func (co *controller) GetUsers(c echo.Context) error {
-	query := app.GetListQuery(c)
+	query := httpapp.GetListQuery(c)
 	users, err := co.userService.GetAll(query)
 
 	if err != nil {

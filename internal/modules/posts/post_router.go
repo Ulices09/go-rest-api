@@ -1,7 +1,7 @@
 package posts
 
 import (
-	"go-rest-api/internal/app"
+	httpapp "go-rest-api/internal/http"
 
 	"github.com/labstack/echo/v4"
 )
@@ -9,7 +9,7 @@ import (
 func NewPostRouter(
 	e *echo.Echo,
 	co PostController,
-	m app.CustomMiddleware,
+	m httpapp.CustomMiddleware,
 ) {
 	postsGroup := e.Group("/posts")
 	postsGroup.GET("", co.GetPosts)

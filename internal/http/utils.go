@@ -1,4 +1,4 @@
-package app
+package httpapp
 
 import (
 	"go-rest-api/internal/core/dto"

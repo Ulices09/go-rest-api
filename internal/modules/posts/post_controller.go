@@ -1,8 +1,8 @@
 package posts
 
 import (
-	"go-rest-api/internal/app"
 	"go-rest-api/internal/core/entity"
+	httpapp "go-rest-api/internal/http"
 	"net/http"
 	"strconv"
 
@@ -18,7 +18,7 @@ func NewPostController(postService PostService) PostController {
 }
 
 func (co *controller) GetPosts(c echo.Context) error {
-	query, err := app.GetListPaginatedQuery(c)
+	query, err := httpapp.GetListPaginatedQuery(c)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -54,7 +54,7 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 }
 
 func (co *controller) CreatePost(c echo.Context) (err error) {
-	userClaims := app.GetLoggedInUser(c)
+	userClaims := httpapp.GetLoggedInUser(c)
 	data := new(entity.Post)
 
 	if err = c.Bind(data); err != nil {
