@@ -1,12 +1,12 @@
 package main
 
 import (
-	"go-rest-api/app"
-	"go-rest-api/config"
-	"go-rest-api/db"
-	"go-rest-api/domain/auth"
-	"go-rest-api/domain/posts"
-	"go-rest-api/domain/users"
+	"go-rest-api/internal/app"
+	"go-rest-api/internal/config"
+	"go-rest-api/internal/db"
+	"go-rest-api/internal/domain/auth"
+	"go-rest-api/internal/domain/posts"
+	"go-rest-api/internal/domain/users"
 	"log"
 )
 

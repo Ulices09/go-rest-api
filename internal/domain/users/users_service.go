@@ -1,9 +1,9 @@
 package users
 
 import (
-	"go-rest-api/types/dto"
-	"go-rest-api/types/entity"
-	"go-rest-api/utils"
+	"go-rest-api/internal/types/dto"
+	"go-rest-api/internal/types/entity"
+	"go-rest-api/internal/utils"
 )
 
 type service struct {

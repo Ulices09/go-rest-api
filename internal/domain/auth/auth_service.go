@@ -2,9 +2,9 @@ package auth
 
 import (
 	"errors"
-	"go-rest-api/config"
-	"go-rest-api/types/entity"
-	"go-rest-api/utils"
+	"go-rest-api/internal/config"
+	"go-rest-api/internal/types/entity"
+	"go-rest-api/internal/utils"
 )
 
 type service struct {

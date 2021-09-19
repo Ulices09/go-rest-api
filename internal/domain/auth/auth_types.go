@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"go-rest-api/types/entity"
+	"go-rest-api/internal/types/entity"
 
 	"github.com/labstack/echo/v4"
 )

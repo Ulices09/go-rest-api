@@ -1,7 +1,7 @@
 package app
 
 import (
-	"go-rest-api/config"
+	"go-rest-api/internal/config"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"

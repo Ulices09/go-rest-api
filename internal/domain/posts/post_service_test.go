@@ -1,9 +1,9 @@
 package posts_test
 
 import (
-	"go-rest-api/domain/posts"
-	"go-rest-api/types/dto"
-	"go-rest-api/types/entity"
+	"go-rest-api/internal/domain/posts"
+	"go-rest-api/internal/types/dto"
+	"go-rest-api/internal/types/entity"
 	"testing"
 	"time"
 

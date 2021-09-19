@@ -2,9 +2,9 @@ package auth_test
 
 import (
 	"errors"
-	"go-rest-api/config"
-	"go-rest-api/domain/auth"
-	"go-rest-api/types/entity"
+	"go-rest-api/internal/config"
+	"go-rest-api/internal/domain/auth"
+	"go-rest-api/internal/types/entity"
 	"testing"
 	"time"
 

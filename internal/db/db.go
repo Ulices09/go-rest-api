@@ -3,8 +3,8 @@ package db
 import (
 	"context"
 	"fmt"
-	"go-rest-api/config"
 	"go-rest-api/ent"
+	"go-rest-api/internal/config"
 	"log"
 	"net/url"
 

@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"go-rest-api/types/entity"
+	"go-rest-api/internal/types/entity"
 	"time"
 
 	"github.com/golang-jwt/jwt"

@@ -1,8 +1,8 @@
 package posts
 
 import (
-	"go-rest-api/app"
-	"go-rest-api/types/entity"
+	"go-rest-api/internal/app"
+	"go-rest-api/internal/types/entity"
 	"net/http"
 	"strconv"
 

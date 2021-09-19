@@ -1,9 +1,9 @@
 package users_test
 
 import (
-	"go-rest-api/domain/users"
-	"go-rest-api/types/dto"
-	"go-rest-api/types/entity"
+	"go-rest-api/internal/domain/users"
+	"go-rest-api/internal/types/dto"
+	"go-rest-api/internal/types/entity"
 	"testing"
 	"time"
 

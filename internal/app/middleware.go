@@ -1,8 +1,8 @@
 package app
 
 import (
-	"go-rest-api/config"
-	"go-rest-api/utils"
+	"go-rest-api/internal/config"
+	"go-rest-api/internal/utils"
 	"net/http"
 
 	"github.com/golang-jwt/jwt"
