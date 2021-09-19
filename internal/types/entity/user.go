@@ -9,18 +9,23 @@ type User struct {
 	Posts    []Post `json:"posts,omitempty"`
 }
 
-func (u *User) MapFromSchema(s *ent.User) {
-	u.ID = s.ID
-	u.Email = s.Email
-	u.Password = s.Password
-	u.CreatedAt = s.CreatedAt
-	u.UpdatedAt = s.UpdatedAt
+func NewUserFromSchema(s *ent.User) *User {
+	user := &User{
+		Model: Model{
+			ID:        s.ID,
+			CreatedAt: s.CreatedAt,
+			UpdatedAt: s.UpdatedAt,
+		},
+		Email:    s.Email,
+		Password: s.Password,
+	}
 
 	if len(s.Edges.Posts) > 0 {
 		for _, p := range s.Edges.Posts {
-			post := &Post{}
-			post.MapFromSchema(p)
-			u.Posts = append(u.Posts, *post)
+			post := NewPostFromSchema(p)
+			user.Posts = append(user.Posts, *post)
 		}
 	}
+
+	return user
 }

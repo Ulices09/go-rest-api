@@ -28,8 +28,6 @@ func (r *repo) GetUserByEmail(email string) (*entity.User, error) {
 		return nil, err
 	}
 
-	user := entity.User{}
-	user.MapFromSchema(result)
-
-	return &user, err
+	user := entity.NewUserFromSchema(result)
+	return user, err
 }

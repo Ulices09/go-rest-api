@@ -42,10 +42,8 @@ func (r *repo) FindAll(filter string, skip int, take int) ([]*entity.Post, int, 
 	posts := []*entity.Post{}
 
 	for _, result := range results {
-		post := entity.Post{}
-		post.MapFromSchema(result)
-
-		posts = append(posts, &post)
+		post := entity.NewPostFromSchema(result)
+		posts = append(posts, post)
 	}
 
 	return posts, count, err
@@ -66,10 +64,8 @@ func (r *repo) FindById(id int) (*entity.Post, error) {
 		return nil, err
 	}
 
-	post := entity.Post{}
-	post.MapFromSchema(result)
-
-	return &post, err
+	post := entity.NewPostFromSchema(result)
+	return post, err
 }
 
 func (r *repo) Create(post *entity.Post, userId int) (*entity.Post, error) {
@@ -84,8 +80,6 @@ func (r *repo) Create(post *entity.Post, userId int) (*entity.Post, error) {
 		return nil, err
 	}
 
-	newPost := entity.Post{}
-	newPost.MapFromSchema(result)
-
-	return &newPost, err
+	newPost := entity.NewPostFromSchema(result)
+	return newPost, err
 }

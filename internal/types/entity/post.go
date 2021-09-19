@@ -9,16 +9,21 @@ type Post struct {
 	User  *User  `json:"user,omitempty"`
 }
 
-func (p *Post) MapFromSchema(s *ent.Post) {
-	p.ID = s.ID
-	p.Title = s.Title
-	p.Text = s.Text
-	p.CreatedAt = s.CreatedAt
-	p.UpdatedAt = s.UpdatedAt
+func NewPostFromSchema(s *ent.Post) *Post {
+	post := &Post{
+		Model: Model{
+			ID:        s.ID,
+			CreatedAt: s.CreatedAt,
+			UpdatedAt: s.UpdatedAt,
+		},
+		Title: s.Title,
+		Text:  s.Text,
+	}
 
 	if s.Edges.User != nil {
-		user := s.Edges.User
-		p.User = &User{}
-		p.User.MapFromSchema(user)
+		userS := s.Edges.User
+		post.User = NewUserFromSchema(userS)
 	}
+
+	return post
 }

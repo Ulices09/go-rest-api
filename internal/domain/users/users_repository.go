@@ -37,22 +37,25 @@ func (r *repo) FindAll(filter string) ([]*entity.User, error) {
 	users := []*entity.User{}
 
 	for _, result := range results {
-		user := entity.User{}
-		user.MapFromSchema(result)
-
-		users = append(users, &user)
+		user := entity.NewUserFromSchema(result)
+		users = append(users, user)
 	}
 
 	return users, err
 }
 
 func (r *repo) FindById(id int) (*entity.User, error) {
-	result, err := r.db.User.Query().Select(
-		entUser.FieldID,
-		entUser.FieldEmail,
-		entUser.FieldCreatedAt,
-		entUser.FieldUpdatedAt,
-	).WithPosts().Where(entUser.ID(id)).Only(r.ctx)
+	result, err := r.db.User.
+		Query().
+		Select(
+			entUser.FieldID,
+			entUser.FieldEmail,
+			entUser.FieldCreatedAt,
+			entUser.FieldUpdatedAt,
+		).
+		WithPosts().
+		Where(entUser.ID(id)).
+		Only(r.ctx)
 
 	if err != nil {
 		if ent.IsNotFound(err) {
@@ -62,21 +65,21 @@ func (r *repo) FindById(id int) (*entity.User, error) {
 		return nil, err
 	}
 
-	user := entity.User{}
-	user.MapFromSchema(result)
-
-	return &user, err
+	user := entity.NewUserFromSchema(result)
+	return user, err
 }
 
 func (r *repo) Create(user *entity.User) (*entity.User, error) {
-	result, err := r.db.User.Create().SetEmail(user.Email).SetPassword(user.Password).Save(r.ctx)
+	result, err := r.db.User.
+		Create().
+		SetEmail(user.Email).
+		SetPassword(user.Password).
+		Save(r.ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
-	newUser := entity.User{}
-	newUser.MapFromSchema(result)
-
-	return &newUser, err
+	newUser := entity.NewUserFromSchema(result)
+	return newUser, err
 }
