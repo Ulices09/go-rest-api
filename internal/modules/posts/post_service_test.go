@@ -3,7 +3,7 @@ package posts_test
 import (
 	"go-rest-api/internal/core/dto"
 	"go-rest-api/internal/core/entity"
-	"go-rest-api/internal/domain/posts"
+	"go-rest-api/internal/modules/posts"
 	"testing"
 	"time"
 

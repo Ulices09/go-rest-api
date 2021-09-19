@@ -3,7 +3,7 @@ package users_test
 import (
 	"go-rest-api/internal/core/dto"
 	"go-rest-api/internal/core/entity"
-	"go-rest-api/internal/domain/users"
+	"go-rest-api/internal/modules/users"
 	"testing"
 	"time"
 
