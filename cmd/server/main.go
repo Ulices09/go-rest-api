@@ -2,8 +2,8 @@ package main
 
 import (
 	"go-rest-api/internal/config"
-	httpapp "go-rest-api/internal/http"
 	"go-rest-api/internal/infrastructure/db"
+	httpapp "go-rest-api/internal/interface/http"
 	"go-rest-api/internal/modules/auth"
 	"go-rest-api/internal/modules/posts"
 	"go-rest-api/internal/modules/users"

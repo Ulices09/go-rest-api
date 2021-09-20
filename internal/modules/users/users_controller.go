@@ -2,7 +2,7 @@ package users
 
 import (
 	"go-rest-api/internal/core/entity"
-	httpapp "go-rest-api/internal/http"
+	httpapp "go-rest-api/internal/interface/http"
 	"net/http"
 	"strconv"
 

@@ -1,7 +1,7 @@
 package posts
 
 import (
-	httpapp "go-rest-api/internal/http"
+	httpapp "go-rest-api/internal/interface/http"
 
 	"github.com/labstack/echo/v4"
 )
