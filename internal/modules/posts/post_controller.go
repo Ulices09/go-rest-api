@@ -2,6 +2,7 @@ package posts
 
 import (
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/core/errors"
 	httpapp "go-rest-api/internal/interface/http"
 	"net/http"
 	"strconv"
@@ -47,7 +48,7 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 	}
 
 	if post == nil {
-		return echo.NewHTTPError(http.StatusNotFound)
+		return errors.NewNotFoundError("Post not found")
 	}
 
 	return c.JSON(http.StatusOK, post)
