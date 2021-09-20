@@ -5,7 +5,6 @@ import (
 	"go-rest-api/internal/core/utils"
 	"net/http"
 
-	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -46,7 +45,7 @@ func (*CustomMiddleware) Secure() echo.MiddlewareFunc {
 func (m *CustomMiddleware) Auth() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			tokenCookie, err := c.Cookie("session-token")
+			tokenCookie, err := GetSessionCookie(c)
 
 			if err != nil {
 				return c.NoContent(http.StatusUnauthorized)
@@ -55,16 +54,8 @@ func (m *CustomMiddleware) Auth() echo.MiddlewareFunc {
 			token, err := utils.VerifyJwt(tokenCookie.Value, m.config.Jwt.Secret)
 
 			if err != nil {
-				c.SetCookie(&http.Cookie{
-					Name:     "session-token",
-					Secure:   false, // TODO: poner true para producción
-					HttpOnly: true,
-					MaxAge:   -1,
-					Path:     "/",
-					SameSite: http.SameSiteStrictMode,
-				})
-
-				return c.JSON(http.StatusUnauthorized, jwt.ErrInvalidKey)
+				SetSessionCookie(c, "")
+				return c.NoContent(http.StatusUnauthorized)
 			}
 
 			// TODO: ver si es necesario llamar a bdpara llenar el resto de los datos del usuario

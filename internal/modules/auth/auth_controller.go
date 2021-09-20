@@ -32,28 +32,12 @@ func (co *controller) Login(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	c.SetCookie(&http.Cookie{
-		Name:     "session-token",
-		Value:    token,
-		Secure:   false, // TODO: poner true para producción
-		HttpOnly: true,
-		Path:     "/",
-		SameSite: http.SameSiteStrictMode,
-	})
-
+	httpapp.SetSessionCookie(c, token)
 	return c.JSON(http.StatusOK, user)
 }
 
 func (co *controller) Logout(c echo.Context) (err error) {
-	c.SetCookie(&http.Cookie{
-		Name:     "session-token",
-		Secure:   false, // TODO: poner true para producción
-		HttpOnly: true,
-		MaxAge:   -1,
-		Path:     "/",
-		SameSite: http.SameSiteStrictMode,
-	})
-
+	httpapp.SetSessionCookie(c, "")
 	return c.NoContent(http.StatusOK)
 }
 
