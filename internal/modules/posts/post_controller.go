@@ -38,17 +38,13 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return errors.NewBadRequestError()
 	}
 
 	post, err := co.postService.GetById(id)
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-
-	if post == nil {
-		return errors.NewNotFoundError("Post not found")
+		return
 	}
 
 	return c.JSON(http.StatusOK, post)
