@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"go-rest-api/internal/core/errors"
 	httpapp "go-rest-api/internal/interface/http"
 	"net/http"
 
@@ -19,17 +20,17 @@ func (co *controller) Login(c echo.Context) (err error) {
 	data := new(LoginDto)
 
 	if err = c.Bind(data); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return errors.NewBadRequestError(err.Error())
 	}
 
 	if err = c.Validate(data); err != nil {
-		return err
+		return
 	}
 
 	user, token, err := co.authService.Login(data.Email, data.Password)
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		return
 	}
 
 	httpapp.SetSessionCookie(c, token)
@@ -46,7 +47,7 @@ func (co *controller) Me(c echo.Context) error {
 	user, err := co.authService.Me(userClaims.Email)
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		return err
 	}
 
 	return c.JSON(http.StatusOK, user)

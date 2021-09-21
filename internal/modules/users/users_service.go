@@ -3,6 +3,7 @@ package users
 import (
 	"go-rest-api/internal/core/dto"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/core/errors"
 	"go-rest-api/internal/core/utils"
 )
 
@@ -28,8 +29,19 @@ func (s *service) GetAll(query dto.ListQuery) (result dto.ListResult, err error)
 	return
 }
 
-func (s *service) GetById(id int) (*entity.User, error) {
-	return s.userRepo.FindById(id)
+func (s *service) GetById(id int) (user *entity.User, err error) {
+	user, err = s.userRepo.FindById(id)
+
+	if err != nil {
+		return
+	}
+
+	if user == nil {
+		err = errors.NewNotFoundError("Post not found")
+		return
+	}
+
+	return
 }
 
 func (s *service) Create(user *entity.User) (newUser *entity.User, err error) {

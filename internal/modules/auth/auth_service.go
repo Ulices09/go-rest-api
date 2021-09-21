@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"errors"
 	"go-rest-api/internal/config"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/core/errors"
 	"go-rest-api/internal/core/utils"
 )
 
@@ -24,13 +24,15 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 	}
 
 	if user == nil {
-		return nil, "", errors.New("incorrect credentials")
+		err = errors.NewBadRequestError("Incorrect credentials")
+		return
 	}
 
 	passwordOk := utils.CompareHash(password, user.Password)
 
 	if !passwordOk {
-		return nil, "", errors.New("incorrect credentials")
+		err = errors.NewBadRequestError("Incorrect credentials")
+		return
 	}
 
 	user.Password = ""

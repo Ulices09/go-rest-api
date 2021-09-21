@@ -103,7 +103,7 @@ func TestLogin_IncorrectPassword(t *testing.T) {
 	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
-	assert.Nil(t, user)
+	assert.NotNil(t, user)
 	assert.Empty(t, token)
 	assert.NotNil(t, err)
 }
