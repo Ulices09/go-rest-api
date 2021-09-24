@@ -10,6 +10,7 @@ import (
 func New(config config.Config, cMiddleware CustomMiddleware) *echo.Echo {
 	e := echo.New()
 
+	e.HideBanner = true
 	e.Validator = &CustomValidator{validator: validator.New()}
 	e.HTTPErrorHandler = CustomHTTPErrorHandler
 	e.Use(cMiddleware.Logger())

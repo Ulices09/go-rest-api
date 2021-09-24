@@ -5,6 +5,7 @@
 Add a config.env file in the root
 
 ```
+APP_ENV=
 DB_HOST=
 DB_NAME=
 DB_PASSWORD=

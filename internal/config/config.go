@@ -3,9 +3,10 @@ package config
 import "github.com/spf13/viper"
 
 type Config struct {
-	DB   DBConfig   `mapstructure:",squash"`
-	Host HostConfig `mapstructure:",squash"`
-	Jwt  JwtConfig  `mapstructure:",squash"`
+	AppEnv string     `mapstructure:"APP_ENV"`
+	DB     DBConfig   `mapstructure:",squash"`
+	Host   HostConfig `mapstructure:",squash"`
+	Jwt    JwtConfig  `mapstructure:",squash"`
 }
 
 type DBConfig struct {
@@ -26,11 +27,12 @@ type JwtConfig struct {
 	Expiration int    `mapstructure:"JWT_EXPIRATION"`
 }
 
-func LoadConfig(path string) (config Config, err error) {
+func Load(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("config")
 	viper.SetConfigType("env")
 
+	viper.SetDefault("APP_ENV", "development")
 	viper.SetDefault("HOST_PORT", "8000")
 	viper.SetDefault("HOST_ALLOW_ORIGINS", []string{"*"})
 	viper.SetDefault("DB_HOST", "localhost")
@@ -49,5 +51,12 @@ func LoadConfig(path string) (config Config, err error) {
 	}
 
 	return
+}
 
+func (c Config) IsDevelopment() bool {
+	return c.AppEnv == "development"
+}
+
+func (c Config) IsProduction() bool {
+	return c.AppEnv == "production"
 }

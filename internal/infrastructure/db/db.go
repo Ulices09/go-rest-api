@@ -5,27 +5,27 @@ import (
 	"fmt"
 	"go-rest-api/ent"
 	"go-rest-api/internal/config"
-	"log"
 	"net/url"
 
 	"entgo.io/ent/dialect/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func InitDb(config config.Config) *ent.Client {
+func New(config config.Config) (client *ent.Client, err error) {
 	drv, err := getMySqlDriver(config)
 
 	if err != nil {
-		log.Fatalf("Failed opening connection to db: %v", err)
+		return
 	}
 
-	client := ent.NewClient(ent.Driver(drv)) // logs: ent.Debug()
+	client = ent.NewClient(ent.Driver(drv)) // logs: ent.Debug()
+	err = client.Schema.Create(context.Background())
 
-	if err := client.Schema.Create(context.Background()); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+	if err != nil {
+		return
 	}
 
-	return client
+	return
 }
 
 func getMySqlDriver(c config.Config) (*sql.Driver, error) {
