@@ -9,11 +9,11 @@ import (
 )
 
 type controller struct {
-	authService AuthService
+	service AuthService
 }
 
 func NewAuthController(authService AuthService) AuthController {
-	return &controller{authService}
+	return &controller{service: authService}
 }
 
 func (co *controller) Login(c echo.Context) (err error) {
@@ -27,7 +27,7 @@ func (co *controller) Login(c echo.Context) (err error) {
 		return
 	}
 
-	user, token, err := co.authService.Login(data.Email, data.Password)
+	user, token, err := co.service.Login(data.Email, data.Password)
 
 	if err != nil {
 		return
@@ -44,7 +44,7 @@ func (co *controller) Logout(c echo.Context) (err error) {
 
 func (co *controller) Me(c echo.Context) error {
 	userClaims := httpapp.GetLoggedInUser(c)
-	user, err := co.authService.Me(userClaims.Email)
+	user, err := co.service.Me(userClaims.Email)
 
 	if err != nil {
 		return err

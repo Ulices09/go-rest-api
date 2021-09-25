@@ -10,7 +10,7 @@ type Logger struct {
 	*zap.SugaredLogger
 }
 
-func New(config config.Config) (logger *Logger, err error) {
+func New(config config.Config) (logger Logger, err error) {
 	var zapLogger *zap.Logger
 
 	if config.IsProduction() {
@@ -23,7 +23,6 @@ func New(config config.Config) (logger *Logger, err error) {
 		return
 	}
 
-	logger = &Logger{}
 	logger.SugaredLogger = zapLogger.Sugar()
 
 	return

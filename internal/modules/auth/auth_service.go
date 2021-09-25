@@ -8,16 +8,16 @@ import (
 )
 
 type service struct {
-	authRepo AuthRepository
-	config   config.Config
+	repo   AuthRepository
+	config config.Config
 }
 
 func NewAuthService(authRepo AuthRepository, config config.Config) AuthService {
-	return &service{authRepo: authRepo, config: config}
+	return &service{repo: authRepo, config: config}
 }
 
 func (s *service) Login(email, password string) (user *entity.User, token string, err error) {
-	user, err = s.authRepo.GetUserByEmail(email)
+	user, err = s.repo.GetUserByEmail(email)
 
 	if err != nil {
 		return
@@ -47,7 +47,7 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 }
 
 func (s *service) Me(email string) (user *entity.User, err error) {
-	user, err = s.authRepo.GetUserByEmail(email)
+	user, err = s.repo.GetUserByEmail(email)
 
 	if err != nil {
 		return
