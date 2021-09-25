@@ -45,8 +45,8 @@ func main() {
 	authController := auth.NewAuthController(authService)
 	auth.NewAuthRouter(server, authController, cMiddleware)
 
-	userRepo := users.NewUserRepository(db)
-	userService := users.NewUserService(userRepo)
+	userRepo := users.NewUserRepository(db, logger)
+	userService := users.NewUserService(userRepo, logger)
 	userController := users.NewUserController(userService)
 	users.NewUserRouter(server, userController)
 

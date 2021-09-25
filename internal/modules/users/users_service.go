@@ -5,20 +5,23 @@ import (
 	"go-rest-api/internal/core/entity"
 	"go-rest-api/internal/core/errors"
 	"go-rest-api/internal/core/utils"
+	"go-rest-api/internal/infrastructure/logger"
 )
 
 type service struct {
-	repo UserRepository
+	repo   UserRepository
+	logger logger.Logger
 }
 
-func NewUserService(userRepo UserRepository) UserService {
-	return &service{userRepo}
+func NewUserService(userRepo UserRepository, logger logger.Logger) UserService {
+	return &service{repo: userRepo, logger: logger}
 }
 
 func (s *service) GetAll(query dto.ListQuery) (result dto.ListResult, err error) {
 	users, err := s.repo.FindAll(query.Filter)
 
 	if err != nil {
+		s.logger.Errorw(err.Error(), "query", query)
 		return
 	}
 
@@ -33,6 +36,7 @@ func (s *service) GetById(id int) (user *entity.User, err error) {
 	user, err = s.repo.FindById(id)
 
 	if err != nil {
+		s.logger.Errorw(err.Error(), "id", id)
 		return
 	}
 
@@ -48,6 +52,8 @@ func (s *service) Create(user *entity.User) (newUser *entity.User, err error) {
 	hashedPassword, err := utils.Hash(user.Password)
 
 	if err != nil {
+		userToLog := entity.NewUserToLog(*user)
+		s.logger.Errorw(err.Error(), "user", userToLog)
 		return
 	}
 
@@ -55,6 +61,8 @@ func (s *service) Create(user *entity.User) (newUser *entity.User, err error) {
 	newUser, err = s.repo.Create(user)
 
 	if err != nil {
+		userToLog := entity.NewUserToLog(*user)
+		s.logger.Errorw(err.Error(), "user", userToLog)
 		return
 	}
 

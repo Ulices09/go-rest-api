@@ -29,3 +29,8 @@ func NewUserFromSchema(s *ent.User) *User {
 
 	return user
 }
+
+func NewUserToLog(user User) User {
+	user.Password = ""
+	return user
+}

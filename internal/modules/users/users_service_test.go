@@ -3,6 +3,7 @@ package users_test
 import (
 	"go-rest-api/internal/core/dto"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/infrastructure/logger"
 	"go-rest-api/internal/modules/users"
 	"testing"
 	"time"
@@ -71,10 +72,11 @@ var (
   Test functions
 */
 func TestGetAll(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("FindAll").Return(usersData, nil)
 
-	service := users.NewUserService(mockRepo)
+	service := users.NewUserService(mockRepo, logger)
 	result, err := service.GetAll(listQuery)
 
 	mockRepo.AssertExpectations(t)
@@ -83,10 +85,11 @@ func TestGetAll(t *testing.T) {
 }
 
 func TestGetById(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("FindById").Return(&user1, nil)
 
-	service := users.NewUserService(mockRepo)
+	service := users.NewUserService(mockRepo, logger)
 	user, err := service.GetById(1)
 
 	mockRepo.AssertExpectations(t)
@@ -97,10 +100,11 @@ func TestGetById(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("Create").Return(&user1, nil)
 
-	service := users.NewUserService(mockRepo)
+	service := users.NewUserService(mockRepo, logger)
 	user, err := service.Create(&user1)
 
 	mockRepo.AssertExpectations(t)

@@ -5,16 +5,18 @@ import (
 	"go-rest-api/ent"
 	entUser "go-rest-api/ent/user"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/infrastructure/logger"
 )
 
 type repo struct {
-	db  *ent.Client
-	ctx context.Context
+	db     *ent.Client
+	ctx    context.Context
+	logger logger.Logger
 }
 
-func NewUserRepository(db *ent.Client) UserRepository {
+func NewUserRepository(db *ent.Client, logger logger.Logger) UserRepository {
 	ctx := context.Background()
-	return &repo{db: db, ctx: ctx}
+	return &repo{db: db, ctx: ctx, logger: logger}
 }
 
 func (r *repo) FindAll(filter string) ([]*entity.User, error) {
@@ -31,6 +33,7 @@ func (r *repo) FindAll(filter string) ([]*entity.User, error) {
 		All(r.ctx)
 
 	if err != nil {
+		r.logger.Errorw(err.Error(), "filter", filter)
 		return nil, err
 	}
 
@@ -62,6 +65,7 @@ func (r *repo) FindById(id int) (*entity.User, error) {
 			return nil, nil
 		}
 
+		r.logger.Errorw(err.Error(), "id", id)
 		return nil, err
 	}
 
@@ -77,6 +81,8 @@ func (r *repo) Create(user *entity.User) (*entity.User, error) {
 		Save(r.ctx)
 
 	if err != nil {
+		userToLog := entity.NewUserToLog(*user)
+		r.logger.Errorw(err.Error(), "user", userToLog)
 		return nil, err
 	}
 
