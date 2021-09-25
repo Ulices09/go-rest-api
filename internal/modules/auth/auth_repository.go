@@ -5,16 +5,18 @@ import (
 	"go-rest-api/ent"
 	entUser "go-rest-api/ent/user"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/infrastructure/logger"
 )
 
 type repo struct {
-	db  *ent.Client
-	ctx context.Context
+	db     *ent.Client
+	ctx    context.Context
+	logger logger.Logger
 }
 
-func NewAuthRepository(db *ent.Client) AuthRepository {
+func NewAuthRepository(db *ent.Client, logger logger.Logger) AuthRepository {
 	ctx := context.Background()
-	return &repo{db: db, ctx: ctx}
+	return &repo{db: db, ctx: ctx, logger: logger}
 }
 
 func (r *repo) GetUserByEmail(email string) (*entity.User, error) {
@@ -25,6 +27,7 @@ func (r *repo) GetUserByEmail(email string) (*entity.User, error) {
 			return nil, nil
 		}
 
+		r.logger.Error("auth/AuthRepository/GetUserByEmail: %s", err)
 		return nil, err
 	}
 
