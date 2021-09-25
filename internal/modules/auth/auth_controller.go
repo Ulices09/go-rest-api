@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"go-rest-api/internal/core/entity"
 	"go-rest-api/internal/core/errors"
 	httpapp "go-rest-api/internal/interface/http"
 	"net/http"
@@ -43,8 +44,8 @@ func (co *controller) Logout(c echo.Context) (err error) {
 }
 
 func (co *controller) Me(c echo.Context) error {
-	userClaims := httpapp.GetLoggedInUser(c)
-	user, err := co.service.Me(userClaims.Email)
+	currentUser := entity.NewCurrentUser(c)
+	user, err := co.service.Me(currentUser.Email)
 
 	if err != nil {
 		return err

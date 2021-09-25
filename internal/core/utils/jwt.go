@@ -11,7 +11,7 @@ import (
 func SignAuthJwt(user entity.User, secret string, expiration int) (string, error) {
 	expiredTime := time.Now().Add(time.Minute * time.Duration(expiration))
 
-	claims := &entity.Claims{
+	claims := &entity.JwtClaims{
 		ID:    user.ID,
 		Email: user.Email,
 		StandardClaims: jwt.StandardClaims{
@@ -28,7 +28,7 @@ func SignAuthJwt(user entity.User, secret string, expiration int) (string, error
 func VerifyJwt(value string, secret string) (*jwt.Token, error) {
 	token, err := jwt.ParseWithClaims(
 		value,
-		&entity.Claims{},
+		&entity.JwtClaims{},
 		func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
