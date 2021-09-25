@@ -11,7 +11,7 @@ import (
 )
 
 type controller struct {
-	userService UserService
+	service UserService
 }
 
 func NewUserController(userService UserService) UserController {
@@ -20,7 +20,7 @@ func NewUserController(userService UserService) UserController {
 
 func (co *controller) GetUsers(c echo.Context) (err error) {
 	query := httpapp.GetListQuery(c)
-	users, err := co.userService.GetAll(query)
+	users, err := co.service.GetAll(query)
 
 	if err != nil {
 		return
@@ -36,7 +36,7 @@ func (co *controller) GetUser(c echo.Context) (err error) {
 		return errors.NewBadRequestError()
 	}
 
-	user, err := co.userService.GetById(id)
+	user, err := co.service.GetById(id)
 
 	if err != nil {
 		return
@@ -56,7 +56,7 @@ func (co *controller) CreateUser(c echo.Context) (err error) {
 		return
 	}
 
-	newUser, err := co.userService.Create(data)
+	newUser, err := co.service.Create(data)
 
 	if err != nil {
 		return

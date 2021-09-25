@@ -8,7 +8,7 @@ import (
 )
 
 type service struct {
-	userRepo UserRepository
+	repo UserRepository
 }
 
 func NewUserService(userRepo UserRepository) UserService {
@@ -16,7 +16,7 @@ func NewUserService(userRepo UserRepository) UserService {
 }
 
 func (s *service) GetAll(query dto.ListQuery) (result dto.ListResult, err error) {
-	users, err := s.userRepo.FindAll(query.Filter)
+	users, err := s.repo.FindAll(query.Filter)
 
 	if err != nil {
 		return
@@ -30,7 +30,7 @@ func (s *service) GetAll(query dto.ListQuery) (result dto.ListResult, err error)
 }
 
 func (s *service) GetById(id int) (user *entity.User, err error) {
-	user, err = s.userRepo.FindById(id)
+	user, err = s.repo.FindById(id)
 
 	if err != nil {
 		return
@@ -52,7 +52,7 @@ func (s *service) Create(user *entity.User) (newUser *entity.User, err error) {
 	}
 
 	user.Password = hashedPassword
-	newUser, err = s.userRepo.Create(user)
+	newUser, err = s.repo.Create(user)
 
 	if err != nil {
 		return
