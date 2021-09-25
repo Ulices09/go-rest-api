@@ -25,7 +25,7 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 	user, err = s.repo.GetUserByEmail(email)
 
 	if err != nil {
-		s.logger.Error("auth/AuthService/Login: %s", err)
+		s.logger.Errorw(err.Error(), "email", email)
 		return
 	}
 
@@ -46,7 +46,7 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 	token, err = utils.SignAuthJwt(*user, s.config.Jwt.Secret, s.config.Jwt.Expiration)
 
 	if err != nil {
-		s.logger.Error("auth/AuthService/Login: %s", err)
+		s.logger.Errorw(err.Error(), "email", email)
 		return
 	}
 
@@ -57,7 +57,7 @@ func (s *service) Me(email string) (user *entity.User, err error) {
 	user, err = s.repo.GetUserByEmail(email)
 
 	if err != nil {
-		s.logger.Error("auth/AuthService/Me: %s", err)
+		s.logger.Errorw(err.Error(), "email", email)
 		return
 	}
 

@@ -27,7 +27,7 @@ func (r *repo) GetUserByEmail(email string) (*entity.User, error) {
 			return nil, nil
 		}
 
-		r.logger.Error("auth/AuthRepository/GetUserByEmail: %s", err)
+		r.logger.Errorw(err.Error(), "email", email)
 		return nil, err
 	}
 
