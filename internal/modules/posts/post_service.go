@@ -7,7 +7,7 @@ import (
 )
 
 type service struct {
-	postRepo PostRepository
+	repo PostRepository
 }
 
 func NewPostService(postRepo PostRepository) PostService {
@@ -15,7 +15,7 @@ func NewPostService(postRepo PostRepository) PostService {
 }
 
 func (s *service) GetAll(query dto.PaginatedListQuery) (result dto.PaginationResult, err error) {
-	posts, total, err := s.postRepo.FindAll(query.Filter, query.Skip, query.Take)
+	posts, total, err := s.repo.FindAll(query.Filter, query.Skip, query.Take)
 
 	if err != nil {
 		return
@@ -26,7 +26,7 @@ func (s *service) GetAll(query dto.PaginatedListQuery) (result dto.PaginationRes
 }
 
 func (s *service) GetById(id int) (post *entity.Post, err error) {
-	post, err = s.postRepo.FindById(id)
+	post, err = s.repo.FindById(id)
 
 	if err != nil {
 		return
@@ -41,5 +41,5 @@ func (s *service) GetById(id int) (post *entity.Post, err error) {
 }
 
 func (s *service) Create(post *entity.Post, userId int) (*entity.Post, error) {
-	return s.postRepo.Create(post, userId)
+	return s.repo.Create(post, userId)
 }

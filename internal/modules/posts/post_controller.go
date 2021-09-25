@@ -11,7 +11,7 @@ import (
 )
 
 type controller struct {
-	postService PostService
+	service PostService
 }
 
 func NewPostController(postService PostService) PostController {
@@ -25,7 +25,7 @@ func (co *controller) GetPosts(c echo.Context) (err error) {
 		return errors.NewBadRequestError()
 	}
 
-	result, err := co.postService.GetAll(query)
+	result, err := co.service.GetAll(query)
 
 	if err != nil {
 		return
@@ -41,7 +41,7 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 		return errors.NewBadRequestError()
 	}
 
-	post, err := co.postService.GetById(id)
+	post, err := co.service.GetById(id)
 
 	if err != nil {
 		return
@@ -62,7 +62,7 @@ func (co *controller) CreatePost(c echo.Context) (err error) {
 		return
 	}
 
-	newPost, err := co.postService.Create(data, userClaims.ID)
+	newPost, err := co.service.Create(data, userClaims.ID)
 
 	if err != nil {
 		return
