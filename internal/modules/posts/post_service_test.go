@@ -3,6 +3,7 @@ package posts_test
 import (
 	"go-rest-api/internal/core/dto"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/infrastructure/logger"
 	"go-rest-api/internal/modules/posts"
 	"testing"
 	"time"
@@ -80,10 +81,11 @@ var (
   Test functions
 */
 func TestGetAll(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("FindAll").Return(postsData, 100, nil)
 
-	service := posts.NewPostService(mockRepo)
+	service := posts.NewPostService(mockRepo, logger)
 	result, err := service.GetAll(paginatedListQuery)
 
 	mockRepo.AssertExpectations(t)
@@ -92,10 +94,11 @@ func TestGetAll(t *testing.T) {
 }
 
 func TestGetById(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("FindById").Return(&post1, nil)
 
-	service := posts.NewPostService(mockRepo)
+	service := posts.NewPostService(mockRepo, logger)
 	post, err := service.GetById(1)
 
 	mockRepo.AssertExpectations(t)
@@ -106,10 +109,11 @@ func TestGetById(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("Create").Return(&post1, nil)
 
-	service := posts.NewPostService(mockRepo)
+	service := posts.NewPostService(mockRepo, logger)
 	post, err := service.Create(&post1, 1)
 
 	mockRepo.AssertExpectations(t)

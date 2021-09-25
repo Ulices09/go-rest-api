@@ -5,16 +5,18 @@ import (
 	"go-rest-api/ent"
 	entPost "go-rest-api/ent/post"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/infrastructure/logger"
 )
 
 type repo struct {
-	db  *ent.Client
-	ctx context.Context
+	db     *ent.Client
+	ctx    context.Context
+	logger logger.Logger
 }
 
-func NewPostRepository(db *ent.Client) PostRepository {
+func NewPostRepository(db *ent.Client, logger logger.Logger) PostRepository {
 	ctx := context.Background()
-	return &repo{db: db, ctx: ctx}
+	return &repo{db: db, ctx: ctx, logger: logger}
 }
 
 func (r *repo) FindAll(filter string, skip int, take int) ([]*entity.Post, int, error) {
@@ -27,6 +29,12 @@ func (r *repo) FindAll(filter string, skip int, take int) ([]*entity.Post, int, 
 	count, err := query.Count(r.ctx)
 
 	if err != nil {
+		r.logger.Errorw(
+			err.Error(),
+			"filter", filter,
+			"skip", skip,
+			"take", take,
+		)
 		return nil, 0, err
 	}
 
@@ -36,6 +44,12 @@ func (r *repo) FindAll(filter string, skip int, take int) ([]*entity.Post, int, 
 		All(r.ctx)
 
 	if err != nil {
+		r.logger.Errorw(
+			err.Error(),
+			"filter", filter,
+			"skip", skip,
+			"take", take,
+		)
 		return nil, 0, err
 	}
 
@@ -61,6 +75,7 @@ func (r *repo) FindById(id int) (*entity.Post, error) {
 			return nil, nil
 		}
 
+		r.logger.Errorw(err.Error(), "id", id)
 		return nil, err
 	}
 
@@ -77,6 +92,11 @@ func (r *repo) Create(post *entity.Post, userId int) (*entity.Post, error) {
 		Save(r.ctx)
 
 	if err != nil {
+		r.logger.Errorw(
+			err.Error(),
+			"post", post,
+			"userId", userId,
+		)
 		return nil, err
 	}
 

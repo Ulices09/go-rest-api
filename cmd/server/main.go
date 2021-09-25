@@ -50,8 +50,8 @@ func main() {
 	userController := users.NewUserController(userService)
 	users.NewUserRouter(server, userController)
 
-	postRepo := posts.NewPostRepository(db)
-	postService := posts.NewPostService(postRepo)
+	postRepo := posts.NewPostRepository(db, logger)
+	postService := posts.NewPostService(postRepo, logger)
 	postController := posts.NewPostController(postService)
 	posts.NewPostRouter(server, postController, cMiddleware)
 
