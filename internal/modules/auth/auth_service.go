@@ -5,21 +5,27 @@ import (
 	"go-rest-api/internal/core/entity"
 	"go-rest-api/internal/core/errors"
 	"go-rest-api/internal/core/utils"
+	"go-rest-api/internal/infrastructure/logger"
 )
 
 type service struct {
 	repo   AuthRepository
 	config config.Config
+	logger logger.Logger
 }
 
-func NewAuthService(authRepo AuthRepository, config config.Config) AuthService {
-	return &service{repo: authRepo, config: config}
+func NewAuthService(
+	authRepo AuthRepository,
+	config config.Config,
+	logger logger.Logger) AuthService {
+	return &service{repo: authRepo, config: config, logger: logger}
 }
 
 func (s *service) Login(email, password string) (user *entity.User, token string, err error) {
 	user, err = s.repo.GetUserByEmail(email)
 
 	if err != nil {
+		s.logger.Error("auth/AuthService/Login: %s", err)
 		return
 	}
 
@@ -40,6 +46,7 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 	token, err = utils.SignAuthJwt(*user, s.config.Jwt.Secret, s.config.Jwt.Expiration)
 
 	if err != nil {
+		s.logger.Error("auth/AuthService/Login: %s", err)
 		return
 	}
 
@@ -50,6 +57,7 @@ func (s *service) Me(email string) (user *entity.User, err error) {
 	user, err = s.repo.GetUserByEmail(email)
 
 	if err != nil {
+		s.logger.Error("auth/AuthService/Me: %s", err)
 		return
 	}
 

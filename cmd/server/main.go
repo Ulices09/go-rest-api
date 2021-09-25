@@ -41,7 +41,7 @@ func main() {
 	server := httpapp.New(config, cMiddleware)
 
 	authRepo := auth.NewAuthRepository(db)
-	authService := auth.NewAuthService(authRepo, config)
+	authService := auth.NewAuthService(authRepo, config, logger)
 	authController := auth.NewAuthController(authService)
 	auth.NewAuthRouter(server, authController, cMiddleware)
 

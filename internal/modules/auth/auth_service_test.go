@@ -4,6 +4,7 @@ import (
 	"errors"
 	"go-rest-api/internal/config"
 	"go-rest-api/internal/core/entity"
+	"go-rest-api/internal/infrastructure/logger"
 	"go-rest-api/internal/modules/auth"
 	"testing"
 	"time"
@@ -60,13 +61,14 @@ var (
   Test functions
 */
 func TestLogin(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("GetUserByEmail").Return(&userSample, nil)
 
 	email := "user1@email.com"
 	password := "1234"
 
-	service := auth.NewAuthService(mockRepo, configSample)
+	service := auth.NewAuthService(mockRepo, configSample, logger)
 	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
@@ -77,13 +79,14 @@ func TestLogin(t *testing.T) {
 }
 
 func TestLogin_IncorrectEmail(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("GetUserByEmail").Return(nil, nil)
 
 	email := "user1@email.com"
 	password := "1234"
 
-	service := auth.NewAuthService(mockRepo, configSample)
+	service := auth.NewAuthService(mockRepo, configSample, logger)
 	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
@@ -93,13 +96,14 @@ func TestLogin_IncorrectEmail(t *testing.T) {
 }
 
 func TestLogin_IncorrectPassword(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("GetUserByEmail").Return(&userSample, nil)
 
 	email := "user1@email.com"
 	password := "incorrect-password"
 
-	service := auth.NewAuthService(mockRepo, configSample)
+	service := auth.NewAuthService(mockRepo, configSample, logger)
 	user, token, err := service.Login(email, password)
 
 	mockRepo.AssertExpectations(t)
@@ -109,12 +113,13 @@ func TestLogin_IncorrectPassword(t *testing.T) {
 }
 
 func TestMe(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("GetUserByEmail").Return(&userSample, nil)
 
 	email := "user1@email.com"
 
-	service := auth.NewAuthService(mockRepo, configSample)
+	service := auth.NewAuthService(mockRepo, configSample, logger)
 	user, err := service.Me(email)
 
 	mockRepo.AssertExpectations(t)
@@ -124,12 +129,13 @@ func TestMe(t *testing.T) {
 }
 
 func TestMe_Failure(t *testing.T) {
+	logger := logger.NewMockLogger(t)
 	mockRepo := new(MockRepository)
 	mockRepo.On("GetUserByEmail").Return(nil, errorSample)
 
 	email := "user1@email.com"
 
-	service := auth.NewAuthService(mockRepo, configSample)
+	service := auth.NewAuthService(mockRepo, configSample, logger)
 	user, err := service.Me(email)
 
 	mockRepo.AssertExpectations(t)
