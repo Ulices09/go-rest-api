@@ -6,7 +6,7 @@ run: ## run the API server
 
 .PHONY: test
 test: ## run unit tests
-	go test ./... | { grep -v 'no test files'; true; }
+	go test -v ./... | { grep -v 'no test files'; true; }
 
 .PHONY: build
 build: ## build the API server binary
