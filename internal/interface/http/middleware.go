@@ -2,7 +2,7 @@ package httpapp
 
 import (
 	"go-rest-api/internal/config"
-	"go-rest-api/internal/core/utils"
+	"go-rest-api/internal/core/libs/jwt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -51,7 +51,7 @@ func (m CustomMiddleware) Auth() echo.MiddlewareFunc {
 				return c.NoContent(http.StatusUnauthorized)
 			}
 
-			token, err := utils.VerifyJwt(tokenCookie.Value, m.config.Jwt.Secret)
+			token, err := jwt.Verify(tokenCookie.Value, m.config.Jwt.Secret)
 
 			if err != nil {
 				SetSessionCookie(c, "")

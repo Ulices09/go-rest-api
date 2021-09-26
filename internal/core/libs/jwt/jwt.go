@@ -1,36 +1,36 @@
-package utils
+package jwt
 
 import (
 	"fmt"
 	"go-rest-api/internal/core/entity"
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	_jwt "github.com/golang-jwt/jwt"
 )
 
-func SignAuthJwt(user entity.User, secret string, expiration int) (string, error) {
+func SignAuth(user entity.User, secret string, expiration int) (string, error) {
 	expiredTime := time.Now().Add(time.Minute * time.Duration(expiration))
 
 	claims := &entity.JwtClaims{
 		ID:    user.ID,
 		Email: user.Email,
-		StandardClaims: jwt.StandardClaims{
+		StandardClaims: _jwt.StandardClaims{
 			ExpiresAt: expiredTime.Unix(),
 		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := _jwt.NewWithClaims(_jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString([]byte(secret))
 
 	return signedToken, err
 }
 
-func VerifyJwt(value string, secret string) (*jwt.Token, error) {
-	token, err := jwt.ParseWithClaims(
+func Verify(value string, secret string) (*_jwt.Token, error) {
+	token, err := _jwt.ParseWithClaims(
 		value,
 		&entity.JwtClaims{},
-		func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+		func(token *_jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*_jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
 			return []byte(secret), nil
