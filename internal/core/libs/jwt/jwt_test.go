@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSignAndCompare(t *testing.T) {
+func TestSignAndVerify(t *testing.T) {
 	secret := "my-secret"
 
 	token, err := jwt.SignAuth(entity.User{}, secret, time.Now().Day())
