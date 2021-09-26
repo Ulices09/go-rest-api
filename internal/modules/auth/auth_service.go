@@ -4,7 +4,8 @@ import (
 	"go-rest-api/internal/config"
 	"go-rest-api/internal/core/entity"
 	"go-rest-api/internal/core/errors"
-	"go-rest-api/internal/core/utils"
+	"go-rest-api/internal/core/libs/hash"
+	"go-rest-api/internal/core/libs/jwt"
 	"go-rest-api/internal/infrastructure/logger"
 )
 
@@ -34,7 +35,7 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 		return
 	}
 
-	passwordOk := utils.CompareHash(password, user.Password)
+	passwordOk := hash.Compare(password, user.Password)
 
 	if !passwordOk {
 		err = errors.NewBadRequestError("Incorrect credentials")
@@ -43,7 +44,7 @@ func (s *service) Login(email, password string) (user *entity.User, token string
 
 	user.Password = ""
 
-	token, err = utils.SignAuthJwt(*user, s.config.Jwt.Secret, s.config.Jwt.Expiration)
+	token, err = jwt.SignAuth(*user, s.config.Jwt.Secret, s.config.Jwt.Expiration)
 
 	if err != nil {
 		s.logger.Errorw(err.Error(), "email", email)

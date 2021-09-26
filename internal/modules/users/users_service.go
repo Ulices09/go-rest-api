@@ -4,7 +4,7 @@ import (
 	"go-rest-api/internal/core/dto"
 	"go-rest-api/internal/core/entity"
 	"go-rest-api/internal/core/errors"
-	"go-rest-api/internal/core/utils"
+	"go-rest-api/internal/core/libs/hash"
 	"go-rest-api/internal/infrastructure/logger"
 )
 
@@ -49,7 +49,7 @@ func (s *service) GetById(id int) (user *entity.User, err error) {
 }
 
 func (s *service) Create(user *entity.User) (newUser *entity.User, err error) {
-	hashedPassword, err := utils.Hash(user.Password)
+	hashedPassword, err := hash.Hash(user.Password)
 
 	if err != nil {
 		userToLog := entity.NewUserToLog(*user)
