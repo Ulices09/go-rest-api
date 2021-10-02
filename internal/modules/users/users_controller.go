@@ -2,7 +2,6 @@ package users
 
 import (
 	"go-rest-api/internal/core/dto"
-	"go-rest-api/internal/core/entity"
 	"go-rest-api/internal/core/errors"
 	"net/http"
 	"strconv"
@@ -57,12 +56,12 @@ func (co *controller) GetUser(c echo.Context) (err error) {
 // @Summary Crate user
 // @Description create new user
 // @Tags users
-// @Param default body entity.User true "user"
+// @Param default body users.CreateUserRequest true "user"
 // @Success 200
 // @Failure default {object} errors.CustomError
 // @Router /users [post]
 func (co *controller) CreateUser(c echo.Context) (err error) {
-	data := new(entity.User)
+	data := new(CreateUserRequest)
 
 	if err = c.Bind(data); err != nil {
 		return errors.NewBadRequestError(err.Error())
@@ -72,7 +71,7 @@ func (co *controller) CreateUser(c echo.Context) (err error) {
 		return
 	}
 
-	newUser, err := co.service.Create(data)
+	newUser, err := co.service.Create(*data)
 
 	if err != nil {
 		return

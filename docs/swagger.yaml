@@ -1,5 +1,5 @@
 definitions:
-  auth.LoginDto:
+  auth.LoginRequest:
     properties:
       email:
         type: string
@@ -49,22 +49,27 @@ definitions:
         type: string
       id:
         type: integer
-      password:
-        type: string
       posts:
         items:
           $ref: '#/definitions/entity.Post'
         type: array
       updatedAt:
         type: string
-    required:
-    - email
-    - password
     type: object
   errors.CustomError:
     properties:
       message:
         type: string
+    type: object
+  users.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
     type: object
 info:
   contact: {}
@@ -77,7 +82,7 @@ paths:
         name: default
         required: true
         schema:
-          $ref: '#/definitions/auth.LoginDto'
+          $ref: '#/definitions/auth.LoginRequest'
       responses:
         "200":
           description: ""
@@ -227,7 +232,7 @@ paths:
         name: default
         required: true
         schema:
-          $ref: '#/definitions/entity.User'
+          $ref: '#/definitions/users.CreateUserRequest'
       responses:
         "200":
           description: ""

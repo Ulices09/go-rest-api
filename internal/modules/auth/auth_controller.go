@@ -20,12 +20,12 @@ func NewAuthController(authService AuthService) AuthController {
 // Login godoc
 // @Summary Login
 // @Tags auth
-// @Param default body auth.LoginDto true "data"
+// @Param default body auth.LoginRequest true "data"
 // @Success 200
 // @Failure default {object} errors.CustomError
 // @Router /auth/login [post]
 func (co *controller) Login(c echo.Context) (err error) {
-	data := new(LoginDto)
+	data := new(LoginRequest)
 
 	if err = c.Bind(data); err != nil {
 		return errors.NewBadRequestError(err.Error())

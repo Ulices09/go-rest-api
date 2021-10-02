@@ -73,7 +73,7 @@ func (r *repo) FindById(id int) (*entity.User, error) {
 	return user, err
 }
 
-func (r *repo) Create(user *entity.User) (*entity.User, error) {
+func (r *repo) Create(user CreateUserRequest) (*entity.User, error) {
 	result, err := r.db.User.
 		Create().
 		SetEmail(user.Email).
@@ -81,8 +81,8 @@ func (r *repo) Create(user *entity.User) (*entity.User, error) {
 		Save(r.ctx)
 
 	if err != nil {
-		userToLog := entity.NewUserToLog(*user)
-		r.logger.Errorw(err.Error(), "user", userToLog)
+		user.Password = ""
+		r.logger.Errorw(err.Error(), "user", user)
 		return nil, err
 	}
 
