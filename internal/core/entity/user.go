@@ -32,8 +32,3 @@ func NewUserFromSchema(s *ent.User, mapPassword bool) *User {
 
 	return user
 }
-
-func NewUserToLog(user User) User {
-	user.Password = ""
-	return user
-}
