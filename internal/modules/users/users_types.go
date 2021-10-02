@@ -7,6 +7,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+/*
+  Interfaces
+*/
+
 type UserController interface {
 	GetUsers(c echo.Context) error
 	GetUser(c echo.Context) error
@@ -16,11 +20,20 @@ type UserController interface {
 type UserService interface {
 	GetAll(query dto.ListQuery) (dto.ListResult, error)
 	GetById(id int) (*entity.User, error)
-	Create(user *entity.User) (*entity.User, error)
+	Create(user CreateUserRequest) (*entity.User, error)
 }
 
 type UserRepository interface {
 	FindAll(filter string) ([]*entity.User, error)
 	FindById(id int) (*entity.User, error)
-	Create(user *entity.User) (*entity.User, error)
+	Create(user CreateUserRequest) (*entity.User, error)
+}
+
+/*
+  DTOs
+*/
+
+type CreateUserRequest struct {
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required"`
 }

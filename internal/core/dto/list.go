@@ -1,8 +1,6 @@
 package dto
 
 import (
-	"strconv"
-
 	"github.com/labstack/echo/v4"
 )
 
@@ -39,45 +37,6 @@ func NewListPaginatedQuery(c echo.Context) (query PaginatedListQuery, err error)
 			Filter: filter,
 		},
 		PaginationQuery: paginationQuery,
-	}
-
-	return
-}
-
-func NewPaginationQuery(c echo.Context) (query PaginationQuery, err error) {
-	pageQuery := c.QueryParam("page")
-	pageSizeQuery := c.QueryParam("pageSize")
-
-	var (
-		page = 0
-		skip = 0
-		take = 10
-	)
-
-	if pageQuery != "" {
-		page, err = strconv.Atoi(pageQuery)
-
-		if err != nil {
-			return
-		}
-
-		if page > 0 {
-			if pageSizeQuery != "" {
-				take, err = strconv.Atoi(pageSizeQuery)
-
-				if err != nil {
-					return
-				}
-			}
-
-			skip = take * (page - 1)
-		}
-	}
-
-	query = PaginationQuery{
-		Page: page,
-		Skip: skip,
-		Take: take,
 	}
 
 	return

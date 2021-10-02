@@ -4,8 +4,8 @@ import "go-rest-api/ent"
 
 type Post struct {
 	Model
-	Title string `json:"title" validate:"required"`
-	Text  string `json:"text" validate:"required"`
+	Title string `json:"title"`
+	Text  string `json:"text"`
 	User  *User  `json:"user,omitempty"`
 }
 
@@ -22,7 +22,7 @@ func NewPostFromSchema(s *ent.Post) *Post {
 
 	if s.Edges.User != nil {
 		userS := s.Edges.User
-		post.User = NewUserFromSchema(userS)
+		post.User = NewUserFromSchema(userS, false)
 	}
 
 	return post

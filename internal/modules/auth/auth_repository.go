@@ -31,6 +31,6 @@ func (r *repo) GetUserByEmail(email string) (*entity.User, error) {
 		return nil, err
 	}
 
-	user := entity.NewUserFromSchema(result)
+	user := entity.NewUserFromSchema(result, true)
 	return user, err
 }

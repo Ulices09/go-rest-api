@@ -1,4 +1,15 @@
 # go-rest-api
+
+## API Documentation
+
+Install swagger cli
+
+```
+$ go install github.com/swaggo/swag/cmd/swag@latest
+```
+
+More information [here](https://github.com/swaggo/swag)
+
 ## References
 
 - [Domain Driven Hexagon](https://awesomeopensource.com/project/Sairyss/domain-driven-hexagon)

@@ -18,6 +18,15 @@ func NewPostController(postService PostService) PostController {
 	return &controller{postService}
 }
 
+// GetPosts godoc
+// @Summary Get posts
+// @Tags posts
+// @Param filter query string false "filter attributes"
+// @Param page query integer false "page"
+// @Param pageSize query integer false "page size"
+// @Success 200 {object} dto.PaginationResult{data=[]entity.Post}
+// @Failure default {object} errors.CustomError
+// @Router /posts [get]
 func (co *controller) GetPosts(c echo.Context) (err error) {
 	query, err := dto.NewListPaginatedQuery(c)
 
@@ -34,6 +43,13 @@ func (co *controller) GetPosts(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, result)
 }
 
+// GetPost godoc
+// @Summary Get post
+// @Tags posts
+// @Param id path integer true "post id"
+// @Success 200 {object} entity.Post
+// @Failure default {object} errors.CustomError
+// @Router /posts/{id} [get]
 func (co *controller) GetPost(c echo.Context) (err error) {
 	id, err := strconv.Atoi(c.Param("id"))
 
@@ -50,9 +66,17 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, post)
 }
 
+// CreatePost godoc
+// @Summary Crate post
+// @Tags posts
+// @Security auth-token
+// @Param default body posts.CreatePostRequest true "post"
+// @Success 200 {object} entity.Post
+// @Failure default {object} errors.CustomError
+// @Router /posts [post]
 func (co *controller) CreatePost(c echo.Context) (err error) {
 	currentUser := entity.NewCurrentUser(c)
-	data := new(entity.Post)
+	data := new(CreatePostRequest)
 
 	if err = c.Bind(data); err != nil {
 		return errors.NewBadRequestError(err.Error())
@@ -62,7 +86,7 @@ func (co *controller) CreatePost(c echo.Context) (err error) {
 		return
 	}
 
-	newPost, err := co.service.Create(data, currentUser.ID)
+	newPost, err := co.service.Create(*data, currentUser.ID)
 
 	if err != nil {
 		return

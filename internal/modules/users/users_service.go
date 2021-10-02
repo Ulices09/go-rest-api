@@ -48,12 +48,12 @@ func (s *service) GetById(id int) (user *entity.User, err error) {
 	return
 }
 
-func (s *service) Create(user *entity.User) (newUser *entity.User, err error) {
+func (s *service) Create(user CreateUserRequest) (newUser *entity.User, err error) {
 	hashedPassword, err := hash.Hash(user.Password)
 
 	if err != nil {
-		userToLog := entity.NewUserToLog(*user)
-		s.logger.Errorw(err.Error(), "user", userToLog)
+		user.Password = ""
+		s.logger.Errorw(err.Error(), "user", user)
 		return
 	}
 
@@ -61,8 +61,8 @@ func (s *service) Create(user *entity.User) (newUser *entity.User, err error) {
 	newUser, err = s.repo.Create(user)
 
 	if err != nil {
-		userToLog := entity.NewUserToLog(*user)
-		s.logger.Errorw(err.Error(), "user", userToLog)
+		user.Password = ""
+		s.logger.Errorw(err.Error(), "user", user)
 		return
 	}
 

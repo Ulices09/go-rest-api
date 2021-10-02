@@ -1,0 +1,258 @@
+definitions:
+  auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.ListResult:
+    properties:
+      data: {}
+    type: object
+  dto.PaginationResult:
+    properties:
+      data: {}
+      pageSize:
+        type: integer
+      pages:
+        type: integer
+      total:
+        type: integer
+    type: object
+  entity.Post:
+    properties:
+      createddAt:
+        type: string
+      id:
+        type: integer
+      text:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+    type: object
+  entity.User:
+    properties:
+      createddAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      posts:
+        items:
+          $ref: '#/definitions/entity.Post'
+        type: array
+      updatedAt:
+        type: string
+    type: object
+  errors.CustomError:
+    properties:
+      message:
+        type: string
+    type: object
+  posts.CreatePostRequest:
+    properties:
+      text:
+        type: string
+      title:
+        type: string
+    required:
+    - text
+    - title
+    type: object
+  users.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      parameters:
+      - description: data
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      responses:
+        "200":
+          description: ""
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      responses:
+        "200":
+          description: ""
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Logout
+      tags:
+      - auth
+  /auth/me:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      security:
+      - auth-token: []
+      summary: Get current user
+      tags:
+      - auth
+  /posts:
+    get:
+      parameters:
+      - description: filter attributes
+        in: query
+        name: filter
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: page size
+        in: query
+        name: pageSize
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.PaginationResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.Post'
+                  type: array
+              type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Get posts
+      tags:
+      - posts
+    post:
+      parameters:
+      - description: post
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/posts.CreatePostRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Post'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      security:
+      - auth-token: []
+      summary: Crate post
+      tags:
+      - posts
+  /posts/{id}:
+    get:
+      parameters:
+      - description: post id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Post'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Get post
+      tags:
+      - posts
+  /users:
+    get:
+      description: get all users
+      parameters:
+      - description: filters users by email
+        in: query
+        name: filter
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ListResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.User'
+                  type: array
+              type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Get users
+      tags:
+      - users
+    post:
+      description: create new user
+      parameters:
+      - description: user
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/users.CreateUserRequest'
+      responses:
+        "200":
+          description: ""
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Crate user
+      tags:
+      - users
+securityDefinitions:
+  auth-token:
+    in: cookie
+    name: session-token
+    type: apiKey
+swagger: "2.0"

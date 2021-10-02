@@ -15,3 +15,7 @@ build: ## build the API server binary
 .PHONY: db-gen
 db-gen: ## generate ent files
 	go generate ./ent
+
+.PHONY: docs-gen
+docs-gen:
+	swag init -g internal/interface/http/docs.go

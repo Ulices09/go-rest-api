@@ -14,5 +14,5 @@ func NewAuthRouter(
 	postsGroup := e.Group("/auth")
 	postsGroup.POST("/login", co.Login)
 	postsGroup.POST("/logout", co.Logout)
-	postsGroup.POST("/me", co.Me, m.Auth())
+	postsGroup.GET("/me", co.Me, m.Auth())
 }

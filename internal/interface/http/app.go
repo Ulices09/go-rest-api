@@ -18,5 +18,7 @@ func New(config config.Config, cMiddleware CustomMiddleware) *echo.Echo {
 	e.Use(cMiddleware.Recover())
 	e.Use(cMiddleware.Secure())
 
+	initDocs(e, config)
+
 	return e
 }

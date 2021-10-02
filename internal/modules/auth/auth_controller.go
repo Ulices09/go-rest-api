@@ -17,8 +17,15 @@ func NewAuthController(authService AuthService) AuthController {
 	return &controller{service: authService}
 }
 
+// Login godoc
+// @Summary Login
+// @Tags auth
+// @Param default body auth.LoginRequest true "data"
+// @Success 200
+// @Failure default {object} errors.CustomError
+// @Router /auth/login [post]
 func (co *controller) Login(c echo.Context) (err error) {
-	data := new(LoginDto)
+	data := new(LoginRequest)
 
 	if err = c.Bind(data); err != nil {
 		return errors.NewBadRequestError(err.Error())
@@ -38,11 +45,24 @@ func (co *controller) Login(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, user)
 }
 
+// Logout godoc
+// @Summary Logout
+// @Tags auth
+// @Success 200
+// @Failure default {object} errors.CustomError
+// @Router /auth/logout [post]
 func (co *controller) Logout(c echo.Context) (err error) {
 	httpapp.SetSessionCookie(c, "")
 	return c.NoContent(http.StatusOK)
 }
 
+// Me godoc
+// @Summary Get current user
+// @Tags auth
+// @Security auth-token
+// @Success 200 {object} entity.User
+// @Failure default {object} errors.CustomError
+// @Router /auth/me [get]
 func (co *controller) Me(c echo.Context) error {
 	currentUser := entity.NewCurrentUser(c)
 	user, err := co.service.Me(currentUser.Email)
