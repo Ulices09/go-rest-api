@@ -1,4 +1,14 @@
 definitions:
+  auth.LoginDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
   dto.ListResult:
     properties:
       data: {}
@@ -49,6 +59,51 @@ definitions:
 info:
   contact: {}
 paths:
+  /auth/login:
+    post:
+      parameters:
+      - description: data
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginDto'
+      responses:
+        "200":
+          description: ""
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      responses:
+        "200":
+          description: ""
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Logout
+      tags:
+      - auth
+  /auth/me:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Get current user
+      tags:
+      - auth
   /users:
     get:
       description: get all users

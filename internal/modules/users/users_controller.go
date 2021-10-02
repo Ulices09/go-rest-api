@@ -53,7 +53,7 @@ func (co *controller) GetUser(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, user)
 }
 
-// GetUsers godoc
+// CreateUser godoc
 // @Summary Crate user
 // @Description create new user
 // @Tags users
