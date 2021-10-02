@@ -1,4 +1,113 @@
+definitions:
+  dto.ListResult:
+    properties:
+      data: {}
+    type: object
+  entity.Post:
+    properties:
+      createddAt:
+        type: string
+      id:
+        type: integer
+      text:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+    required:
+    - text
+    - title
+    type: object
+  entity.User:
+    properties:
+      createddAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      posts:
+        items:
+          $ref: '#/definitions/entity.Post'
+        type: array
+      updatedAt:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  errors.CustomError:
+    properties:
+      message:
+        type: string
+    type: object
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Go Rest API
+  version: "1.0"
+paths:
+  /users:
+    get:
+      description: get all users
+      parameters:
+      - description: filters users by email
+        in: query
+        name: filter
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ListResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.User'
+                  type: array
+              type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: List users
+      tags:
+      - users
+    post:
+      description: create new user
+      parameters:
+      - description: data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      responses:
+        "200":
+          description: ""
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Crate user
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

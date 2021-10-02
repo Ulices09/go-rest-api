@@ -18,6 +18,14 @@ func NewUserController(userService UserService) UserController {
 	return &controller{userService}
 }
 
+// GetUsers godoc
+// @Summary List users
+// @Description get all users
+// @Tags users
+// @Param filter query string false "filters users by email"
+// @Success 200 {object} dto.ListResult{data=[]entity.User}
+// @Failure default {object} errors.CustomError
+// @Router /users [get]
 func (co *controller) GetUsers(c echo.Context) (err error) {
 	query := dto.NewListQuery(c)
 	users, err := co.service.GetAll(query)
@@ -45,6 +53,14 @@ func (co *controller) GetUser(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, user)
 }
 
+// GetUsers godoc
+// @Summary Crate user
+// @Description create new user
+// @Tags users
+// @Param user body entity.User true "data"
+// @Success 200
+// @Failure default {object} errors.CustomError
+// @Router /users [post]
 func (co *controller) CreateUser(c echo.Context) (err error) {
 	data := new(entity.User)
 
