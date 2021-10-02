@@ -40,7 +40,7 @@ func (r *repo) FindAll(filter string) ([]*entity.User, error) {
 	users := []*entity.User{}
 
 	for _, result := range results {
-		user := entity.NewUserFromSchema(result)
+		user := entity.NewUserFromSchema(result, false)
 		users = append(users, user)
 	}
 
@@ -69,7 +69,7 @@ func (r *repo) FindById(id int) (*entity.User, error) {
 		return nil, err
 	}
 
-	user := entity.NewUserFromSchema(result)
+	user := entity.NewUserFromSchema(result, false)
 	return user, err
 }
 
@@ -86,6 +86,6 @@ func (r *repo) Create(user *entity.User) (*entity.User, error) {
 		return nil, err
 	}
 
-	newUser := entity.NewUserFromSchema(result)
+	newUser := entity.NewUserFromSchema(result, false)
 	return newUser, err
 }

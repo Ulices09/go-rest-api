@@ -9,15 +9,18 @@ type User struct {
 	Posts    []Post `json:"posts,omitempty"`
 }
 
-func NewUserFromSchema(s *ent.User) *User {
+func NewUserFromSchema(s *ent.User, mapPassword bool) *User {
 	user := &User{
 		Model: Model{
 			ID:        s.ID,
 			CreatedAt: s.CreatedAt,
 			UpdatedAt: s.UpdatedAt,
 		},
-		Email:    s.Email,
-		Password: s.Password,
+		Email: s.Email,
+	}
+
+	if mapPassword {
+		user.Password = s.Password
 	}
 
 	if len(s.Edges.Posts) > 0 {

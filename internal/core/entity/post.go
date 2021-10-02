@@ -22,7 +22,7 @@ func NewPostFromSchema(s *ent.Post) *Post {
 
 	if s.Edges.User != nil {
 		userS := s.Edges.User
-		post.User = NewUserFromSchema(userS)
+		post.User = NewUserFromSchema(userS, false)
 	}
 
 	return post
