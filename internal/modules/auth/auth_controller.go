@@ -59,6 +59,7 @@ func (co *controller) Logout(c echo.Context) (err error) {
 // Me godoc
 // @Summary Get current user
 // @Tags auth
+// @Security auth-token
 // @Success 200 {object} entity.User
 // @Failure default {object} errors.CustomError
 // @Router /auth/me [get]

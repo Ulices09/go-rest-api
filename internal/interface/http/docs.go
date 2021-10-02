@@ -8,7 +8,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-// @securityDefinitions.apikey ApiKeyAuth
+// @securityDefinitions.apikey auth-token
 // @in cookie
 // @name session-token
 func initDocs(e *echo.Echo, config config.Config) {

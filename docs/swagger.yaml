@@ -101,6 +101,8 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/errors.CustomError'
+      security:
+      - auth-token: []
       summary: Get current user
       tags:
       - auth
@@ -151,7 +153,7 @@ paths:
       tags:
       - users
 securityDefinitions:
-  ApiKeyAuth:
+  auth-token:
     in: cookie
     name: session-token
     type: apiKey

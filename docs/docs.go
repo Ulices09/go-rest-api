@@ -74,6 +74,11 @@ var doc = `{
         },
         "/auth/me": {
             "get": {
+                "security": [
+                    {
+                        "auth-token": []
+                    }
+                ],
                 "tags": [
                     "auth"
                 ],
@@ -259,7 +264,7 @@ var doc = `{
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
+        "auth-token": {
             "type": "apiKey",
             "name": "session-token",
             "in": "cookie"

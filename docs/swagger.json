@@ -55,6 +55,11 @@
         },
         "/auth/me": {
             "get": {
+                "security": [
+                    {
+                        "auth-token": []
+                    }
+                ],
                 "tags": [
                     "auth"
                 ],
@@ -240,7 +245,7 @@
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
+        "auth-token": {
             "type": "apiKey",
             "name": "session-token",
             "in": "cookie"
