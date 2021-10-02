@@ -13,6 +13,16 @@ definitions:
     properties:
       data: {}
     type: object
+  dto.PaginationResult:
+    properties:
+      data: {}
+      pageSize:
+        type: integer
+      pages:
+        type: integer
+      total:
+        type: integer
+    type: object
   entity.Post:
     properties:
       createddAt:
@@ -106,6 +116,82 @@ paths:
       summary: Get current user
       tags:
       - auth
+  /posts:
+    get:
+      parameters:
+      - description: filter attributes
+        in: query
+        name: filter
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: page size
+        in: query
+        name: pageSize
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.PaginationResult'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/entity.Post'
+                  type: array
+              type: object
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Get posts
+      tags:
+      - posts
+    post:
+      parameters:
+      - description: post
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Post'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Post'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      security:
+      - auth-token: []
+      summary: Crate post
+      tags:
+      - posts
+  /posts/{id}:
+    get:
+      parameters:
+      - description: post id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Post'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/errors.CustomError'
+      summary: Get post
+      tags:
+      - posts
   /users:
     get:
       description: get all users
@@ -130,15 +216,15 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/errors.CustomError'
-      summary: List users
+      summary: Get users
       tags:
       - users
     post:
       description: create new user
       parameters:
-      - description: data
+      - description: user
         in: body
-        name: user
+        name: default
         required: true
         schema:
           $ref: '#/definitions/entity.User'

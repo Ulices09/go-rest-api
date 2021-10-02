@@ -19,7 +19,7 @@ func NewUserController(userService UserService) UserController {
 }
 
 // GetUsers godoc
-// @Summary List users
+// @Summary Get users
 // @Description get all users
 // @Tags users
 // @Param filter query string false "filters users by email"
@@ -57,7 +57,7 @@ func (co *controller) GetUser(c echo.Context) (err error) {
 // @Summary Crate user
 // @Description create new user
 // @Tags users
-// @Param user body entity.User true "data"
+// @Param default body entity.User true "user"
 // @Success 200
 // @Failure default {object} errors.CustomError
 // @Router /users [post]
