@@ -44,7 +44,7 @@ func (s *service) GetById(id int) (post *entity.Post, err error) {
 	return
 }
 
-func (s *service) Create(post *entity.Post, userId int) (newPost *entity.Post, err error) {
+func (s *service) Create(post CreatePostRequest, userId int) (newPost *entity.Post, err error) {
 	newPost, err = s.repo.Create(post, userId)
 
 	if err != nil {

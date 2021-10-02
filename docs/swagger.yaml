@@ -37,9 +37,6 @@ definitions:
         type: string
       user:
         $ref: '#/definitions/entity.User'
-    required:
-    - text
-    - title
     type: object
   entity.User:
     properties:
@@ -60,6 +57,16 @@ definitions:
     properties:
       message:
         type: string
+    type: object
+  posts.CreatePostRequest:
+    properties:
+      text:
+        type: string
+      title:
+        type: string
+    required:
+    - text
+    - title
     type: object
   users.CreateUserRequest:
     properties:
@@ -162,7 +169,7 @@ paths:
         name: default
         required: true
         schema:
-          $ref: '#/definitions/entity.Post'
+          $ref: '#/definitions/posts.CreatePostRequest'
       responses:
         "200":
           description: OK

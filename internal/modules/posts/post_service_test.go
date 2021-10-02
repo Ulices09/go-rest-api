@@ -32,7 +32,7 @@ func (m *MockRepository) FindById(id int) (*entity.Post, error) {
 	return result.(*entity.Post), args.Error(1)
 }
 
-func (m *MockRepository) Create(post *entity.Post, userId int) (*entity.Post, error) {
+func (m *MockRepository) Create(post posts.CreatePostRequest, userId int) (*entity.Post, error) {
 	args := m.Called()
 	result := args.Get(0)
 	return result.(*entity.Post), args.Error(1)
@@ -43,6 +43,11 @@ func (m *MockRepository) Create(post *entity.Post, userId int) (*entity.Post, er
 */
 
 var (
+	createPostRequest = posts.CreatePostRequest{
+		Title: "My first post",
+		Text:  "This is my first post",
+	}
+
 	post1 = entity.Post{
 		Title: "My first post",
 		Text:  "This is my first post",
@@ -114,7 +119,7 @@ func TestCreate(t *testing.T) {
 	mockRepo.On("Create").Return(&post1, nil)
 
 	service := posts.NewPostService(mockRepo, logger)
-	post, err := service.Create(&post1, 1)
+	post, err := service.Create(createPostRequest, 1)
 
 	mockRepo.AssertExpectations(t)
 	assert.Equal(t, post1.Title, post.Title)

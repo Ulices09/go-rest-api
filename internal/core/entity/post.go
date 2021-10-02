@@ -4,8 +4,8 @@ import "go-rest-api/ent"
 
 type Post struct {
 	Model
-	Title string `json:"title" validate:"required"`
-	Text  string `json:"text" validate:"required"`
+	Title string `json:"title"`
+	Text  string `json:"text"`
 	User  *User  `json:"user,omitempty"`
 }
 

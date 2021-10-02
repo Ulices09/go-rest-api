@@ -172,7 +172,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.Post"
+                            "$ref": "#/definitions/posts.CreatePostRequest"
                         }
                     }
                 ],
@@ -338,10 +338,6 @@ var doc = `{
         },
         "entity.Post": {
             "type": "object",
-            "required": [
-                "text",
-                "title"
-            ],
             "properties": {
                 "createddAt": {
                     "type": "string"
@@ -390,6 +386,21 @@ var doc = `{
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "posts.CreatePostRequest": {
+            "type": "object",
+            "required": [
+                "text",
+                "title"
+            ],
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }

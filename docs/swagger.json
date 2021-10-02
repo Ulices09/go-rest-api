@@ -153,7 +153,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.Post"
+                            "$ref": "#/definitions/posts.CreatePostRequest"
                         }
                     }
                 ],
@@ -319,10 +319,6 @@
         },
         "entity.Post": {
             "type": "object",
-            "required": [
-                "text",
-                "title"
-            ],
             "properties": {
                 "createddAt": {
                     "type": "string"
@@ -371,6 +367,21 @@
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "posts.CreatePostRequest": {
+            "type": "object",
+            "required": [
+                "text",
+                "title"
+            ],
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }

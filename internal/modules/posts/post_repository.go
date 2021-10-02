@@ -83,10 +83,10 @@ func (r *repo) FindById(id int) (*entity.Post, error) {
 	return post, err
 }
 
-func (r *repo) Create(post *entity.Post, userId int) (*entity.Post, error) {
+func (r *repo) Create(post CreatePostRequest, userId int) (*entity.Post, error) {
 	result, err := r.db.Post.
 		Create().
-		SetTitle(post.Text).
+		SetTitle(post.Title).
 		SetText(post.Text).
 		SetUser(&ent.User{ID: userId}).
 		Save(r.ctx)

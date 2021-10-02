@@ -70,13 +70,13 @@ func (co *controller) GetPost(c echo.Context) (err error) {
 // @Summary Crate post
 // @Tags posts
 // @Security auth-token
-// @Param default body entity.Post true "post"
+// @Param default body posts.CreatePostRequest true "post"
 // @Success 200 {object} entity.Post
 // @Failure default {object} errors.CustomError
 // @Router /posts [post]
 func (co *controller) CreatePost(c echo.Context) (err error) {
 	currentUser := entity.NewCurrentUser(c)
-	data := new(entity.Post)
+	data := new(CreatePostRequest)
 
 	if err = c.Bind(data); err != nil {
 		return errors.NewBadRequestError(err.Error())
@@ -86,7 +86,7 @@ func (co *controller) CreatePost(c echo.Context) (err error) {
 		return
 	}
 
-	newPost, err := co.service.Create(data, currentUser.ID)
+	newPost, err := co.service.Create(*data, currentUser.ID)
 
 	if err != nil {
 		return
