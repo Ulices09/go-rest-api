@@ -19,7 +19,7 @@ func NewUserRepository(db *ent.Client, logger logger.Logger) UserRepository {
 	return &repo{db: db, ctx: ctx, logger: logger}
 }
 
-func (r *repo) FindAll(filter string) ([]*entity.User, error) {
+func (r *repo) FindAll(filter string) ([]entity.User, error) {
 	results, err := r.db.User.
 		Query().
 		WithPosts().
@@ -37,11 +37,11 @@ func (r *repo) FindAll(filter string) ([]*entity.User, error) {
 		return nil, err
 	}
 
-	users := []*entity.User{}
+	users := []entity.User{}
 
 	for _, result := range results {
 		user := entity.NewUserFromSchema(result, false)
-		users = append(users, user)
+		users = append(users, *user)
 	}
 
 	return users, err

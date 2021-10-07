@@ -24,7 +24,7 @@ type UserService interface {
 }
 
 type UserRepository interface {
-	FindAll(filter string) ([]*entity.User, error)
+	FindAll(filter string) ([]entity.User, error)
 	FindById(id int) (*entity.User, error)
 	Create(user CreateUserRequest) (*entity.User, error)
 }
