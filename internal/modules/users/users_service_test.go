@@ -20,10 +20,10 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) FindAll(filter string) ([]*entity.User, error) {
+func (m *MockRepository) FindAll(filter string) ([]entity.User, error) {
 	args := m.Called()
 	result := args.Get(0)
-	return result.([]*entity.User), args.Error(1)
+	return result.([]entity.User), args.Error(1)
 }
 
 func (m *MockRepository) FindById(id int) (*entity.User, error) {
@@ -68,7 +68,7 @@ var (
 		},
 	}
 
-	usersData = []*entity.User{&user1, &user2}
+	usersData = []entity.User{user1, user2}
 
 	listQuery = dto.ListQuery{Filter: ""}
 )
@@ -85,7 +85,7 @@ func TestGetAll(t *testing.T) {
 	result, err := service.GetAll(listQuery)
 
 	mockRepo.AssertExpectations(t)
-	assert.Equal(t, 2, len(result.Data.([]*entity.User)))
+	assert.Equal(t, 2, len(result.Data.([]entity.User)))
 	assert.Nil(t, err)
 }
 

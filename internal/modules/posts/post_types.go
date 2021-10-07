@@ -24,7 +24,7 @@ type PostService interface {
 }
 
 type PostRepository interface {
-	FindAll(filter string, skip int, take int) ([]*entity.Post, int, error)
+	FindAll(filter string, skip int, take int) ([]entity.Post, int, error)
 	FindById(id int) (*entity.Post, error)
 	Create(post CreatePostRequest, userId int) (*entity.Post, error)
 }

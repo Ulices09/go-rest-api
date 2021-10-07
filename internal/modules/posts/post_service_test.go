@@ -20,10 +20,10 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (m *MockRepository) FindAll(filter string, skip int, take int) ([]*entity.Post, int, error) {
+func (m *MockRepository) FindAll(filter string, skip int, take int) ([]entity.Post, int, error) {
 	args := m.Called()
 	result := args.Get(0)
-	return result.([]*entity.Post), args.Int(1), args.Error(2)
+	return result.([]entity.Post), args.Int(1), args.Error(2)
 }
 
 func (m *MockRepository) FindById(id int) (*entity.Post, error) {
@@ -68,7 +68,7 @@ var (
 		},
 	}
 
-	postsData = []*entity.Post{&post1, &post2}
+	postsData = []entity.Post{post1, post2}
 
 	paginatedListQuery = dto.PaginatedListQuery{
 		ListQuery: dto.ListQuery{
@@ -94,7 +94,7 @@ func TestGetAll(t *testing.T) {
 	result, err := service.GetAll(paginatedListQuery)
 
 	mockRepo.AssertExpectations(t)
-	assert.Equal(t, 2, len(result.Data.([]*entity.Post)))
+	assert.Equal(t, 2, len(result.Data.([]entity.Post)))
 	assert.Nil(t, err)
 }
 
