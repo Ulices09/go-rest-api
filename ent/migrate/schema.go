@@ -32,6 +32,17 @@ var (
 			},
 		},
 	}
+	// RoleColumns holds the columns for the "role" table.
+	RoleColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+	}
+	// RoleTable holds the schema information for the "role" table.
+	RoleTable = &schema.Table{
+		Name:       "role",
+		Columns:    RoleColumns,
+		PrimaryKey: []*schema.Column{RoleColumns[0]},
+	}
 	// UserColumns holds the columns for the "user" table.
 	UserColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -39,16 +50,26 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "email", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
+		{Name: "role_id", Type: field.TypeInt, Nullable: true},
 	}
 	// UserTable holds the schema information for the "user" table.
 	UserTable = &schema.Table{
 		Name:       "user",
 		Columns:    UserColumns,
 		PrimaryKey: []*schema.Column{UserColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "user_role_users",
+				Columns:    []*schema.Column{UserColumns[5]},
+				RefColumns: []*schema.Column{RoleColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		PostTable,
+		RoleTable,
 		UserTable,
 	}
 )
@@ -58,6 +79,10 @@ func init() {
 	PostTable.Annotation = &entsql.Annotation{
 		Table: "post",
 	}
+	RoleTable.Annotation = &entsql.Annotation{
+		Table: "role",
+	}
+	UserTable.ForeignKeys[0].RefTable = RoleTable
 	UserTable.Annotation = &entsql.Annotation{
 		Table: "user",
 	}
