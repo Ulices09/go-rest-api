@@ -409,7 +409,8 @@ var doc = `{
             "type": "object",
             "required": [
                 "email",
-                "password"
+                "password",
+                "roleId"
             ],
             "properties": {
                 "email": {
@@ -417,6 +418,9 @@ var doc = `{
                 },
                 "password": {
                     "type": "string"
+                },
+                "roleId": {
+                    "type": "integer"
                 }
             }
         }

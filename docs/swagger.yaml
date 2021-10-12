@@ -74,9 +74,12 @@ definitions:
         type: string
       password:
         type: string
+      roleId:
+        type: integer
     required:
     - email
     - password
+    - roleId
     type: object
 info:
   contact: {}

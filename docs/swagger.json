@@ -390,7 +390,8 @@
             "type": "object",
             "required": [
                 "email",
-                "password"
+                "password",
+                "roleId"
             ],
             "properties": {
                 "email": {
@@ -398,6 +399,9 @@
                 },
                 "password": {
                     "type": "string"
+                },
+                "roleId": {
+                    "type": "integer"
                 }
             }
         }
