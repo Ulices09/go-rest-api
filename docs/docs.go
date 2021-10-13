@@ -359,6 +359,23 @@ var doc = `{
                 }
             }
         },
+        "entity.Role": {
+            "type": "object",
+            "properties": {
+                "createddAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.User": {
             "type": "object",
             "properties": {
@@ -376,6 +393,9 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/entity.Post"
                     }
+                },
+                "role": {
+                    "$ref": "#/definitions/entity.Role"
                 },
                 "updatedAt": {
                     "type": "string"
