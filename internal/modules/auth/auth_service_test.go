@@ -3,6 +3,7 @@ package auth_test
 import (
 	"errors"
 	"go-rest-api/internal/config"
+	"go-rest-api/internal/core/constants"
 	"go-rest-api/internal/core/entity"
 	"go-rest-api/internal/infrastructure/logger"
 	"go-rest-api/internal/modules/auth"
@@ -44,6 +45,11 @@ var (
 			ID:        1,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
+		},
+		Role: &entity.Role{
+			Model: entity.Model{
+				ID: constants.RoleAdmin,
+			},
 		},
 	}
 
