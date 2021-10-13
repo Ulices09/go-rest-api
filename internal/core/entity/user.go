@@ -6,6 +6,7 @@ type User struct {
 	Model
 	Email    string `json:"email"`
 	Password string `json:"-"`
+	Role     *Role  `json:"role,omitempty"`
 	Posts    []Post `json:"posts,omitempty"`
 }
 
@@ -21,6 +22,13 @@ func NewUserFromSchema(s *ent.User, mapPassword bool) *User {
 
 	if mapPassword {
 		user.Password = s.Password
+	}
+
+	if s.Edges.Role != nil {
+		user.Role = &Role{
+			Model: Model{ID: s.Edges.Role.ID},
+			Name:  s.Edges.Role.Name,
+		}
 	}
 
 	if len(s.Edges.Posts) > 0 {

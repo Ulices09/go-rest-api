@@ -38,6 +38,17 @@ definitions:
       user:
         $ref: '#/definitions/entity.User'
     type: object
+  entity.Role:
+    properties:
+      createddAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   entity.User:
     properties:
       createddAt:
@@ -50,6 +61,8 @@ definitions:
         items:
           $ref: '#/definitions/entity.Post'
         type: array
+      role:
+        $ref: '#/definitions/entity.Role'
       updatedAt:
         type: string
     type: object
@@ -74,9 +87,12 @@ definitions:
         type: string
       password:
         type: string
+      roleId:
+        type: integer
     required:
     - email
     - password
+    - roleId
     type: object
 info:
   contact: {}

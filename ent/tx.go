@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// Post is the client for interacting with the Post builders.
 	Post *PostClient
+	// Role is the client for interacting with the Role builders.
+	Role *RoleClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 
@@ -152,6 +154,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Post = NewPostClient(tx.config)
+	tx.Role = NewRoleClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 }
 

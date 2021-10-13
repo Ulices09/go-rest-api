@@ -1,11 +1,31 @@
 # go-rest-api
 
+## ORM 
+
+Install the ent cli to create new schemas
+
+```
+go get entgo.io/ent/cmd/ent
+```
+
+Create a new schema with the following command 
+
+```
+go run entgo.io/ent/cmd/ent init <SchemaName>
+```
+
+After adding the corresponding fields, edges, etc. Generate the code with the following command
+
+```
+make db-gen
+```
+
 ## API Documentation
 
 Install swagger cli
 
 ```
-$ go install github.com/swaggo/swag/cmd/swag@latest
+go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
 More information [here](https://github.com/swaggo/swag)

@@ -28,6 +28,9 @@ func (User) Mixin() []ent.Mixin {
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("posts", Post.Type),
+		edge.From("role", Role.Type).
+			Ref("users").
+			Unique(),
 	}
 }
 

@@ -20,7 +20,10 @@ func NewAuthRepository(db *ent.Client, logger logger.Logger) AuthRepository {
 }
 
 func (r *repo) GetUserByEmail(email string) (*entity.User, error) {
-	result, err := r.db.User.Query().Where(entUser.Email(email)).Only(r.ctx)
+	result, err := r.db.User.Query().
+		WithRole().
+		Where(entUser.Email(email)).
+		Only(r.ctx)
 
 	if err != nil {
 		if ent.IsNotFound(err) {

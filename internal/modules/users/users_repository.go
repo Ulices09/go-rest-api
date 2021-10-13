@@ -78,6 +78,7 @@ func (r *repo) Create(user CreateUserRequest) (*entity.User, error) {
 		Create().
 		SetEmail(user.Email).
 		SetPassword(user.Password).
+		SetRoleID(user.RoleId).
 		Save(r.ctx)
 
 	if err != nil {

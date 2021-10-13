@@ -12,8 +12,9 @@ func SignAuth(user entity.User, secret string, expiration int) (string, error) {
 	expiredTime := time.Now().Add(time.Minute * time.Duration(expiration))
 
 	claims := &entity.JwtClaims{
-		ID:    user.ID,
-		Email: user.Email,
+		ID:     user.ID,
+		Email:  user.Email,
+		RoleId: user.Role.ID,
 		StandardClaims: _jwt.StandardClaims{
 			ExpiresAt: expiredTime.Unix(),
 		},

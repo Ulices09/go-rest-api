@@ -21,6 +21,8 @@ const (
 	FieldPassword = "password"
 	// EdgePosts holds the string denoting the posts edge name in mutations.
 	EdgePosts = "posts"
+	// EdgeRole holds the string denoting the role edge name in mutations.
+	EdgeRole = "role"
 	// Table holds the table name of the user in the database.
 	Table = "user"
 	// PostsTable is the table that holds the posts relation/edge.
@@ -30,6 +32,13 @@ const (
 	PostsInverseTable = "post"
 	// PostsColumn is the table column denoting the posts relation/edge.
 	PostsColumn = "user_posts"
+	// RoleTable is the table that holds the role relation/edge.
+	RoleTable = "user"
+	// RoleInverseTable is the table name for the Role entity.
+	// It exists in this package in order to avoid circular dependency with the "role" package.
+	RoleInverseTable = "role"
+	// RoleColumn is the table column denoting the role relation/edge.
+	RoleColumn = "role_id"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -41,10 +50,21 @@ var Columns = []string{
 	FieldPassword,
 }
 
+// ForeignKeys holds the SQL foreign-keys that are owned by the "user"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"role_id",
+}
+
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}

@@ -10,10 +10,25 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSignAndVerify(t *testing.T) {
-	secret := "my-secret"
+var (
+	secret = "my-secret"
 
-	token, err := jwt.SignAuth(entity.User{}, secret, time.Now().Day())
+	user = entity.User{
+		Model: entity.Model{
+			ID: 1,
+		},
+		Email: "email@email.com",
+		Role: &entity.Role{
+			Model: entity.Model{
+				ID: 1,
+			},
+		},
+	}
+)
+
+func TestSignAndVerify(t *testing.T) {
+
+	token, err := jwt.SignAuth(user, secret, time.Now().Day())
 	assert.NotEmpty(t, token)
 	assert.Nil(t, err)
 
