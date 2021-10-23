@@ -88,7 +88,7 @@ func (r *repo) Create(post CreatePostRequest, userId int) (*entity.Post, error) 
 		Create().
 		SetTitle(post.Title).
 		SetText(post.Text).
-		SetUser(&ent.User{ID: userId}).
+		SetUserID(userId).
 		Save(r.ctx)
 
 	if err != nil {
